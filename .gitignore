@@ -1,0 +1,21 @@
+﻿.idea
+# Java
+back-academico/target/
+back-academico/.idea/
+
+# Python
+back-materiais/__pycache__/
+back-materiais/venv/
+
+# Node (React/Vue)
+front-aluno/node_modules/
+front-admin/node_modules/
+
+# Android
+mobile/.gradle/
+mobile/build/
+
+# LaTeX
+docs/latex/*.aux
+docs/latex/*.log
+docs/latex/*.pdf
