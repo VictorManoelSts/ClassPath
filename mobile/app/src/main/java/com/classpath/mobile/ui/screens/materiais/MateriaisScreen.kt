@@ -44,6 +44,7 @@ import com.classpath.mobile.ui.common.ErrorState
 import com.classpath.mobile.ui.common.FilterDropdown
 import com.classpath.mobile.ui.common.LoadingState
 import com.classpath.mobile.ui.common.UiState
+import com.classpath.mobile.util.normalizedForMatch
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,11 +78,16 @@ fun MateriaisScreen() {
                 val data = state.data
                 val opcoes = listOf<Disciplina?>(null) + data.disciplinas
                 // "disciplina" no Material é texto livre (sem FK com o Back Acadêmico),
-                // então o filtro compara pelo nome, não por id.
-                val materiaisFiltrados = if (disciplinaSelecionada == null) {
+                // então o filtro compara pelo nome, não por id — e usa comparação
+                // normalizada (ignora acento/caixa/espaços) para não quebrar por
+                // pequenas diferenças de digitação entre os dois back-ends.
+                val nomeSelecionadoNormalizado = disciplinaSelecionada?.nome?.normalizedForMatch()
+                val materiaisFiltrados = if (nomeSelecionadoNormalizado == null) {
                     data.materiais
                 } else {
-                    data.materiais.filter { it.disciplina == disciplinaSelecionada?.nome }
+                    data.materiais.filter {
+                        it.disciplina.normalizedForMatch() == nomeSelecionadoNormalizado
+                    }
                 }
 
                 Column(
