@@ -1,4 +1,4 @@
-package com.portalturma.academico.dto;
+package com.classpath.academico.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

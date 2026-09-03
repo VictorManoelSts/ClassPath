@@ -1,6 +1,6 @@
-package com.portalturma.academico.repository;
+package com.classpath.academico.repository;
 
-import com.portalturma.academico.model.Horario;
+import com.classpath.academico.model.Horario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

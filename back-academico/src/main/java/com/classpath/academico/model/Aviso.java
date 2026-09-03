@@ -1,4 +1,4 @@
-package com.portalturma.academico.model;
+package com.classpath.academico.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.portalturma.academico;
+package com.classpath.academico;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

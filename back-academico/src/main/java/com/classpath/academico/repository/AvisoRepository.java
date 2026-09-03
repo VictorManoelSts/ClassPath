@@ -1,6 +1,6 @@
-package com.portalturma.academico.repository;
+package com.classpath.academico.repository;
 
-import com.portalturma.academico.model.Aviso;
+import com.classpath.academico.model.Aviso;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

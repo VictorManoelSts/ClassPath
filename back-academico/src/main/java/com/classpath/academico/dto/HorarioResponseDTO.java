@@ -1,6 +1,6 @@
-package com.portalturma.academico.dto;
+package com.classpath.academico.dto;
 
-import com.portalturma.academico.model.Horario;
+import com.classpath.academico.model.Horario;
 
 import java.time.LocalTime;
 
