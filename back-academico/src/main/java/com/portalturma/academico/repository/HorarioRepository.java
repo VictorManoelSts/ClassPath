@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HorarioRepository extends JpaRepository<Horario, Long> {
 
-    List<Horario> findAll();
+
 
     // Usado para exibir a grade filtrada por disciplina, se necessário
     List<Horario> findByDisciplinaId(Long disciplinaId);
