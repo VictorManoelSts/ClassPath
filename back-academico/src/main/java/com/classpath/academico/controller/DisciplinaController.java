@@ -1,11 +1,11 @@
-package com.portalturma.academico.controller;
+package com.classpath.academico.controller;
 
-import com.portalturma.academico.exception.ResourceConflictException;
-import com.portalturma.academico.exception.ResourceNotFoundException;
-import com.portalturma.academico.model.Disciplina;
-import com.portalturma.academico.repository.AvisoRepository;
-import com.portalturma.academico.repository.DisciplinaRepository;
-import com.portalturma.academico.repository.HorarioRepository;
+import com.classpath.academico.exception.ResourceConflictException;
+import com.classpath.academico.exception.ResourceNotFoundException;
+import com.classpath.academico.model.Disciplina;
+import com.classpath.academico.repository.AvisoRepository;
+import com.classpath.academico.repository.DisciplinaRepository;
+import com.classpath.academico.repository.HorarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;

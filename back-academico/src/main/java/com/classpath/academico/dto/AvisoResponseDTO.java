@@ -1,6 +1,6 @@
-package com.portalturma.academico.dto;
+package com.classpath.academico.dto;
 
-import com.portalturma.academico.model.Aviso;
+import com.classpath.academico.model.Aviso;
 
 import java.time.LocalDate;
 

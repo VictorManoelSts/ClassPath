@@ -1,4 +1,4 @@
-package com.portalturma.academico;
+package com.classpath.academico;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

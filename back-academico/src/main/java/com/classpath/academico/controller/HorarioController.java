@@ -1,13 +1,13 @@
-package com.portalturma.academico.controller;
+package com.classpath.academico.controller;
 
-import com.portalturma.academico.dto.HorarioRequestDTO;
-import com.portalturma.academico.dto.HorarioResponseDTO;
-import com.portalturma.academico.exception.BusinessRuleException;
-import com.portalturma.academico.exception.ResourceNotFoundException;
-import com.portalturma.academico.model.Disciplina;
-import com.portalturma.academico.model.Horario;
-import com.portalturma.academico.repository.DisciplinaRepository;
-import com.portalturma.academico.repository.HorarioRepository;
+import com.classpath.academico.dto.HorarioRequestDTO;
+import com.classpath.academico.dto.HorarioResponseDTO;
+import com.classpath.academico.exception.BusinessRuleException;
+import com.classpath.academico.exception.ResourceNotFoundException;
+import com.classpath.academico.model.Disciplina;
+import com.classpath.academico.model.Horario;
+import com.classpath.academico.repository.DisciplinaRepository;
+import com.classpath.academico.repository.HorarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

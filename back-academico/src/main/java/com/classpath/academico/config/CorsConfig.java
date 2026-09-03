@@ -1,4 +1,4 @@
-package com.portalturma.academico.config;
+package com.classpath.academico.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;

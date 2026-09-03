@@ -1,4 +1,4 @@
-package com.portalturma.academico.exception;
+package com.classpath.academico.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;

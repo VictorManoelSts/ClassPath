@@ -1,12 +1,12 @@
-package com.portalturma.academico.controller;
+package com.classpath.academico.controller;
 
-import com.portalturma.academico.dto.AvisoRequestDTO;
-import com.portalturma.academico.dto.AvisoResponseDTO;
-import com.portalturma.academico.exception.ResourceNotFoundException;
-import com.portalturma.academico.model.Aviso;
-import com.portalturma.academico.model.Disciplina;
-import com.portalturma.academico.repository.AvisoRepository;
-import com.portalturma.academico.repository.DisciplinaRepository;
+import com.classpath.academico.dto.AvisoRequestDTO;
+import com.classpath.academico.dto.AvisoResponseDTO;
+import com.classpath.academico.exception.ResourceNotFoundException;
+import com.classpath.academico.model.Aviso;
+import com.classpath.academico.model.Disciplina;
+import com.classpath.academico.repository.AvisoRepository;
+import com.classpath.academico.repository.DisciplinaRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
