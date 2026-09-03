@@ -2,6 +2,7 @@ package com.portalturma.academico.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * Representa a tabela "disciplinas" do PostgreSQL.
@@ -16,10 +17,12 @@ public class Disciplina {
     private Long id;
 
     @NotBlank(message = "O nome da disciplina é obrigatório")
+    @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres")
     @Column(nullable = false, length = 100)
     private String nome;
 
     @NotBlank(message = "O nome do professor é obrigatório")
+    @Size(max = 100, message = "O nome do professor deve ter no máximo 100 caracteres")
     @Column(nullable = false, length = 100)
     private String professor;
 
