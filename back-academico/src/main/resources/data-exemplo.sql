@@ -25,5 +25,5 @@ INSERT INTO avisos (titulo, descricao, disciplina_id, data_publicacao)
 SELECT 'Prova de Banco de Dados', 'A prova será realizada na próxima aula.', id, '2026-08-28'
 FROM disciplinas WHERE nome = 'Banco de Dados';
 INSERT INTO avisos (titulo, descricao, disciplina_id, data_publicacao)
-SELECT 'Entrega do trabalho de Java', 'Prazo final para envio do projeto do portal da turma.', id, '2026-09-16'
+SELECT 'Entrega do trabalho de Java', 'Prazo final para envio do projeto do ClassPath.', id, '2026-09-16'
 FROM disciplinas WHERE nome = 'Java';

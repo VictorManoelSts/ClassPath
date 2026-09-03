@@ -10,12 +10,12 @@ import java.time.LocalDate;
  */
 public class AvisoResponseDTO {
 
-    private Long id;
-    private String titulo;
-    private String descricao;
-    private Long disciplinaId;
-    private String disciplinaNome;
-    private LocalDate dataPublicacao;
+    private final Long id;
+    private final String titulo;
+    private final String descricao;
+    private final Long disciplinaId;
+    private final String disciplinaNome;
+    private final LocalDate dataPublicacao;
 
     public AvisoResponseDTO(Aviso aviso) {
         this.id = aviso.getId();

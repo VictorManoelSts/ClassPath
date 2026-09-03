@@ -1,4 +1,4 @@
-# Back-end Acadêmico — Portal da Turma
+# Back-end Acadêmico — ClassPath
 
 Projeto acadêmico simples para cadastrar disciplinas, horários e avisos. Foi
 desenvolvido com Java 17, Spring Boot, Spring Data JPA e PostgreSQL.
@@ -62,13 +62,13 @@ docker compose up -d
 ### Opção 2: criar o banco manualmente
 
 ```sql
-CREATE DATABASE portal_turma;
+CREATE DATABASE classpath;
 ```
 
 Por padrão, a aplicação usa:
 
 ```properties
-URL=jdbc:postgresql://localhost:5432/portal_turma
+URL=jdbc:postgresql://localhost:5432/classpath
 USUARIO=postgres
 SENHA=postgres
 ```
