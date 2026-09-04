@@ -11,6 +11,7 @@ public interface HorarioRepository extends JpaRepository<Horario, Long> {
 
     // Usado para exibir a grade filtrada por disciplina, se necessário
     List<Horario> findByDisciplinaId(Long disciplinaId);
+    List<Horario> findByDiaSemana(String diaSemana);
 
     boolean existsByDisciplinaId(Long disciplinaId);
 }

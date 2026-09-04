@@ -36,6 +36,7 @@ public class HorarioService {
 
     public HorarioResponseDTO criar(HorarioRequestDTO dto) {
         validarIntervalo(dto);
+        validarConflitoDeHorario(dto, null);
         Disciplina disciplina = disciplinaService.buscarPorId(dto.getDisciplinaId());
 
         Horario horario = new Horario(
@@ -51,6 +52,7 @@ public class HorarioService {
 
     public HorarioResponseDTO atualizar(Long id, HorarioRequestDTO dto) {
         validarIntervalo(dto);
+        validarConflitoDeHorario(dto, id);
         Horario horario = buscarHorario(id);
         Disciplina disciplina = disciplinaService.buscarPorId(dto.getDisciplinaId());
 
@@ -77,6 +79,25 @@ public class HorarioService {
         if (!dto.getHorarioInicio().isBefore(dto.getHorarioFim())) {
             throw new BusinessRuleException("O horário de início deve ser anterior ao horário de fim");
         }
+    }
+
+    private void validarConflitoDeHorario(HorarioRequestDTO dto, Long idIgnorar) {
+        List<Horario> horariosNoMesmoDia = horarioRepository.findByDiaSemana(dto.getDiaSemana().trim());
+
+        boolean existeConflito = horariosNoMesmoDia.stream()
+                .filter(h -> idIgnorar == null || !h.getId().equals(idIgnorar))
+                .anyMatch(h -> horariosSeSobrepõem(h, dto));
+
+        if (existeConflito) {
+            throw new BusinessRuleException(
+                    "Já existe uma aula cadastrada que se sobrepõe a este dia e horário"
+            );
+        }
+    }
+
+    private boolean horariosSeSobrepõem(Horario existente, HorarioRequestDTO novo) {
+        return existente.getHorarioInicio().isBefore(novo.getHorarioFim())
+                && novo.getHorarioInicio().isBefore(existente.getHorarioFim());
     }
 
     private String normalizarSala(String sala) {
