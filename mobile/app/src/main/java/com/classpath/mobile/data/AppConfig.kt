@@ -15,7 +15,7 @@ package com.classpath.mobile.data
  */
 object AppConfig {
 
-    const val USE_MOCK_DATA = true
+    const val USE_MOCK_DATA = false
 
     // 10.0.2.2 é o endereço que o emulador Android usa para acessar o "localhost"
     // da máquina host. Ajustar para a URL real assim que os back-ends forem publicados.

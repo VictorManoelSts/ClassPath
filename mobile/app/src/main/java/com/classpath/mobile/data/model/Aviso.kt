@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 data class Aviso(
     val id: Int,
     val titulo: String,
-    val mensagem: String,
+    val descricao: String,
     val disciplinaId: Int? = null,
     val dataPublicacao: String
 )

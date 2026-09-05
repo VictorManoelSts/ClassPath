@@ -8,7 +8,7 @@ data class Horario(
     val id: Int,
     val disciplinaId: Int,
     val diaSemana: String,
-    val horaInicio: String,
-    val horaFim: String,
+    val horarioInicio: String,
+    val horarioFim: String,
     val sala: String? = null
 )

@@ -41,35 +41,35 @@ class FakeAcademicoRepository : AcademicoRepository {
         Aviso(
             id = 1,
             titulo = "Entrega do trabalho final adiada",
-            mensagem = "A entrega da documentação do ClassPath foi adiada para 16/09. Aproveitem o tempo extra para revisar a integração entre os módulos.",
+            descricao = "A entrega da documentação do ClassPath foi adiada para 16/09. Aproveitem o tempo extra para revisar a integração entre os módulos.",
             disciplinaId = 1,
             dataPublicacao = "2026-08-28"
         ),
         Aviso(
             id = 2,
             titulo = "Prova remarcada",
-            mensagem = "A prova de Estrutura de Dados foi remarcada para a próxima terça-feira, no mesmo horário.",
+            descricao = "A prova de Estrutura de Dados foi remarcada para a próxima terça-feira, no mesmo horário.",
             disciplinaId = 2,
             dataPublicacao = "2026-08-27"
         ),
         Aviso(
             id = 3,
             titulo = "Aula vaga amanhã",
-            mensagem = "Não haverá aula de Banco de Dados amanhã. O professor repõe o conteúdo na semana seguinte.",
+            descricao = "Não haverá aula de Banco de Dados amanhã. O professor repõe o conteúdo na semana seguinte.",
             disciplinaId = 3,
             dataPublicacao = "2026-08-26"
         ),
         Aviso(
             id = 4,
             titulo = "Semana acadêmica",
-            mensagem = "As inscrições para a semana acadêmica do curso já estão abertas no site da coordenação.",
+            descricao = "As inscrições para a semana acadêmica do curso já estão abertas no site da coordenação.",
             disciplinaId = null,
             dataPublicacao = "2026-08-24"
         ),
         Aviso(
             id = 5,
             titulo = "Manutenção nos laboratórios",
-            mensagem = "Os laboratórios 1 e 3 passarão por manutenção neste sábado. Nenhuma aula será afetada.",
+            descricao = "Os laboratórios 1 e 3 passarão por manutenção neste sábado. Nenhuma aula será afetada.",
             disciplinaId = null,
             dataPublicacao = "2026-08-20"
         )

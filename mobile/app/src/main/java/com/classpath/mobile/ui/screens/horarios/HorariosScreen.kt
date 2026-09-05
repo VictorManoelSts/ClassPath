@@ -61,7 +61,7 @@ fun HorariosScreen() {
                     data.horarios.filter { it.disciplinaId == disciplinaSelecionada?.id }
                 }
                 val agrupados = DiaSemana.ORDEM.mapNotNull { dia ->
-                    val doDia = horariosFiltrados.filter { it.diaSemana == dia }.sortedBy { it.horaInicio }
+                    val doDia = horariosFiltrados.filter { it.diaSemana == dia }.sortedBy { it.horarioInicio }
                     if (doDia.isEmpty()) null else dia to doDia
                 }
 
@@ -142,7 +142,7 @@ private fun HorarioCard(horario: Horario, disciplina: Disciplina?) {
                 }
             }
             Text(
-                text = "${horario.horaInicio} - ${horario.horaFim}",
+                text = "${horario.horarioInicio} - ${horario.horarioFim}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
