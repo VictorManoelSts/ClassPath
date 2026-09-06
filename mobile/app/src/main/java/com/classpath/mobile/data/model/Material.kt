@@ -1,5 +1,7 @@
 package com.classpath.mobile.data.model
 
+import com.classpath.mobile.data.AppConfig
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,6 +15,10 @@ data class Material(
     val id: String,
     val nome: String,
     val disciplina: String,
-    val dataUpload: String,
-    val url: String? = null
-)
+    @SerialName("data_upload") val dataUpload: String,
+    val tamanho: Long,
+    @SerialName("content_type") val contentType: String
+) {
+    val url: String
+        get() = "${AppConfig.BASE_URL_MATERIAIS}materiais/$id"
+}

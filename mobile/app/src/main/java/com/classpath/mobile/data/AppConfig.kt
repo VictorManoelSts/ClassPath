@@ -19,6 +19,6 @@ object AppConfig {
 
     // 10.0.2.2 é o endereço que o emulador Android usa para acessar o "localhost"
     // da máquina host. Ajustar para a URL real assim que os back-ends forem publicados.
-    const val BASE_URL_ACADEMICO = "http://10.0.2.2:8080/" // Back Acadêmico (Java + Spring Boot)
-    const val BASE_URL_MATERIAIS = "http://10.0.2.2:8000/" // Back Materiais (Python + FastAPI)
+    const val BASE_URL_ACADEMICO = "http://192.168.x.x:8080/" // Back Acadêmico (Java + Spring Boot)
+    const val BASE_URL_MATERIAIS = "http://192.168.x.x:8000/" // Back Materiais (Python + FastAPI)
 }
