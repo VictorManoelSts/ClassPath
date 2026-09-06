@@ -1,0 +1,12 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+#Sat Sep 05 16:39:17 GMT-03:00 2026
+sdk.dir=C\:\\Android\\Sdk
+# Troque o IP exemplo para o IP da sua rede
+USE_MOCK=false
+URL_ACADEMICO="http://192.1xx.xx.xxx:8080/"
+URL_MATERIAIS="http://192.1xx.xx.xxx:8000/"
