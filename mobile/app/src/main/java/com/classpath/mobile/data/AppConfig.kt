@@ -1,5 +1,6 @@
 package com.classpath.mobile.data
 
+import com.classpath.mobile.BuildConfig
 /**
  * Configuração central do app.
  *
@@ -15,10 +16,7 @@ package com.classpath.mobile.data
  */
 object AppConfig {
 
-    const val USE_MOCK_DATA = false
-
-    // 10.0.2.2 é o endereço que o emulador Android usa para acessar o "localhost"
-    // da máquina host. Ajustar para a URL real assim que os back-ends forem publicados.
-    const val BASE_URL_ACADEMICO = "http://192.168.x.x:8080/" // Back Acadêmico (Java + Spring Boot)
-    const val BASE_URL_MATERIAIS = "http://192.168.x.x:8000/" // Back Materiais (Python + FastAPI)
+    const val USE_MOCK_DATA = BuildConfig.USE_MOCK
+    const val BASE_URL_ACADEMICO = BuildConfig.URL_ACADEMICO
+    const val BASE_URL_MATERIAIS = BuildConfig.URL_MATERIAIS
 }
