@@ -9,7 +9,7 @@ from fastapi.responses import StreamingResponse
 from app.database import fs_bucket
 from app.models import MaterialMetadata
 
-router = APIRouter(prefix="/materiais", tags=["materiais"])
+router = APIRouter(prefix="/api/materiais", tags=["materiais"])
 
 CONTENT_TYPE_PDF = "application/pdf"
 
