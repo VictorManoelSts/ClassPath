@@ -1,0 +1,17 @@
+{
+  "name": "ClassPath — Portal do aluno",
+  "short_name": "ClassPath",
+  "description": "Disciplinas, horários e avisos do período.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfbfa",
+  "theme_color": "#1f6b58",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
