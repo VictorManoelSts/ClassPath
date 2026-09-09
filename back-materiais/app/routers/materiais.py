@@ -123,3 +123,19 @@ async def baixar_material(file_id: str):
             "Content-Disposition": f'attachment; filename="{grid_out.filename}"'
         },
     )
+
+@router.delete("/{file_id}")
+async def deletar_material(file_id: str):
+    """
+    Remove o arquivo e seus metadados (chunks) do MongoDB GridFS.
+    """
+    # Utiliza a função auxiliar que você já criou para validar o ID
+    oid = _to_object_id(file_id)
+
+    try:
+        # No Motor (Async), a exclusão no GridFSBucket é feita diretamente pelo método delete()
+        await fs_bucket.delete(oid)
+        return {"mensagem": "Material excluído com sucesso do GridFS."}
+    except Exception:
+        # Se o Motor levantar um erro de NoFile (ou outro problema de I/O)
+        raise HTTPException(status_code=404, detail="Arquivo não encontrado ou já foi excluído.")
