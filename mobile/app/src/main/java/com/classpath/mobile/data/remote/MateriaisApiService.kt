@@ -12,6 +12,6 @@ import retrofit2.http.Query
  */
 interface MateriaisApiService {
 
-    @GET("materiais")
+    @GET("api/materiais")
     suspend fun getMateriais(@Query("disciplina") disciplina: String? = null): List<Material>
 }
