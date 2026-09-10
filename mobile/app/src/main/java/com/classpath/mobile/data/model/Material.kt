@@ -20,5 +20,5 @@ data class Material(
     @SerialName("content_type") val contentType: String
 ) {
     val url: String
-        get() = "${AppConfig.BASE_URL_MATERIAIS}materiais/$id"
+        get() = "${AppConfig.BASE_URL_MATERIAIS}api/materiais/$id"
 }
