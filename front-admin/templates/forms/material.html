@@ -1,0 +1,36 @@
+﻿<!-- Materiais -->
+    <section id="materiais" class="secao-recurso" role="tabpanel" aria-labelledby="aba-materiais" tabindex="0">
+        <div class="grade-recurso">
+            <article class="painel formulario-painel">
+                <h2 id="titulo-form-material">Fazer Upload de PDF</h2>
+                <!-- O enctype multipart/form-data é fundamental aqui -->
+                <form id="form-material" novalidate enctype="multipart/form-data">
+                    <input id="material-id" type="hidden">
+
+                    <label for="material-disciplina">Disciplina</label>
+                    <select id="material-disciplina" name="disciplina_id" required></select>
+
+                    <label for="material-arquivo">Arquivo (PDF)</label>
+                    <input id="material-arquivo" type="file" name="file" accept="application/pdf" required>
+
+                    <div class="acoes-formulario">
+                        <button type="submit" class="botao primario">Enviar Material</button>
+                        <button id="cancelar-material" type="button" class="botao secundario oculto">Cancelar</button>
+                    </div>
+                </form>
+            </article>
+
+            <article class="painel lista-painel">
+                <div class="titulo-lista">
+                    <div>
+                        <h2>Materiais enviados</h2>
+                        <p>O back-end orquestrará a listagem do GridFS (MongoDB).</p>
+                    </div>
+                </div>
+                <!-- Divisória visual para os itens. Será preenchida caso faça uma rota GET futuramente -->
+                <div id="lista-materiais" class="lista-avisos">
+                    <p class="vazio">Selecione uma disciplina e faça o upload do PDF.</p>
+                </div>
+            </article>
+        </div>
+    </section>

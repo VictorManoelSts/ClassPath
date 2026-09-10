@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel para cadastrar disciplinas, horários e avisos do ClassPath">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121312" media="(prefers-color-scheme: dark)">
+    <title>ClassPath | Painel administrativo</title>
+
+    <!-- Link dinâmico para o favicon via Jinja2 (Pode dar erro 404 se você não colocou o arquivo lá ainda) -->
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</head>
+<body>
+<a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="cabecalho">
+    <div>
+        <span class="marca">ClassPath</span>
+        <h1>Painel administrativo</h1>
+    </div>
+
+    <div class="acoes-cabecalho">
+        <div id="status-rede" class="aviso-offline oculto" role="status">Sem conexão</div>
+
+        <div id="status-api" class="status status-desconectado" role="status" aria-live="polite">
+            <span>BFF não verificado</span>
+        </div>
+
+        <button id="alternar-tema" type="button" class="alternar-tema" aria-pressed="false"
+                aria-label="Mudar para o tema escuro">
+            <svg class="icone-lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+            </svg>
+            <svg class="icone-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<main id="conteudo" class="conteudo" tabindex="-1">
+    <!-- Removida a section "painel conexao" -->
+
+    <section class="resumo" aria-label="Resumo dos registros">
+        <article class="cartao-resumo">
+            <span>Disciplinas</span>
+            <strong id="total-disciplinas">0</strong>
+        </article>
+        <article class="cartao-resumo">
+            <span>Horários</span>
+            <strong id="total-horarios">0</strong>
+        </article>
+        <article class="cartao-resumo">
+            <span>Avisos</span>
+            <strong id="total-avisos">0</strong>
+        </article>
+    </section>
+
+    <div class="abas" role="tablist" aria-label="Áreas do painel">
+        <button type="button" class="aba ativa" role="tab" id="aba-disciplinas"
+                aria-controls="disciplinas" aria-selected="true" data-alvo="disciplinas">Disciplinas</button>
+        <button type="button" class="aba" role="tab" id="aba-horarios" tabindex="-1"
+                aria-controls="horarios" aria-selected="false" data-alvo="horarios">Horários</button>
+        <button type="button" class="aba" role="tab" id="aba-avisos" tabindex="-1"
+                aria-controls="avisos" aria-selected="false" data-alvo="avisos">Avisos</button>
+        <button type="button" class="aba" role="tab" id="aba-materiais" tabindex="-1" aria-controls="materiais" aria-selected="false" data-alvo="materiais">Materiais</button>
+    </div>
+
+    <!-- Injeção dos formulários modulares -->
+    {% include 'forms/disciplina.html' %}
+    {% include 'forms/horario.html' %}
+    {% include 'forms/aviso.html' %}
+    {% include 'forms/material.html' %}
+
+    <section class="painel resposta-painel">
+        <div class="titulo-lista">
+            <div>
+                <h2>Última resposta da API (Flask BFF)</h2>
+                <p id="resumo-requisicao">Nenhuma requisição realizada.</p>
+            </div>
+            <button id="limpar-resposta" type="button" class="botao secundario">Limpar</button>
+        </div>
+        <pre id="resposta-api">A resposta JSON aparecerá aqui.</pre>
+    </section>
+</main>
+
+<dialog id="dialogo-confirmacao" class="dialogo" aria-labelledby="dialogo-titulo">
+    <h2 id="dialogo-titulo">Confirmar exclusão</h2>
+    <p id="dialogo-texto"></p>
+    <div class="dialogo-acoes">
+        <button id="dialogo-cancelar" type="button" class="botao secundario">Cancelar</button>
+        <button id="dialogo-confirmar" type="button" class="botao destrutivo">Excluir</button>
+    </div>
+</dialog>
+
+<div id="mensagem" class="mensagem" role="status" aria-live="polite"></div>
+
+<!-- O Javascript principal -->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

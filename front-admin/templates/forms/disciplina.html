@@ -1,0 +1,44 @@
+﻿ <!-- Disciplinas -->
+    <section id="disciplinas" class="secao-recurso ativa" role="tabpanel" aria-labelledby="aba-disciplinas" tabindex="0">
+        <div class="grade-recurso">
+            <article class="painel formulario-painel">
+                <h2 id="titulo-form-disciplina">Cadastrar disciplina</h2>
+                <form id="form-disciplina" novalidate>
+                    <input id="disciplina-id" type="hidden">
+
+                    <label for="disciplina-nome">Nome</label>
+                    <input id="disciplina-nome" maxlength="100" required placeholder="Ex.: Programação em Java">
+
+                    <label for="disciplina-professor">Professor</label>
+                    <input id="disciplina-professor" maxlength="100" required placeholder="Ex.: Carlos Andrade">
+
+                    <div class="acoes-formulario">
+                        <button type="submit" class="botao primario">Salvar disciplina</button>
+                        <button id="cancelar-disciplina" type="button" class="botao secundario oculto">Cancelar</button>
+                    </div>
+                </form>
+            </article>
+
+            <article class="painel lista-painel">
+                <div class="titulo-lista">
+                    <div>
+                        <h2>Disciplinas cadastradas</h2>
+                        <p>Dados da tabela <code>disciplinas</code>.</p>
+                    </div>
+                    <div class="ferramentas-lista">
+                        <div class="campo-busca">
+                            <label class="visualmente-oculto" for="busca-disciplinas">Buscar disciplina</label>
+                            <input id="busca-disciplinas" type="search" placeholder="Buscar por nome ou professor">
+                        </div>
+                        <button id="recarregar-disciplinas" type="button" class="botao secundario">Atualizar</button>
+                    </div>
+                </div>
+                <div class="tabela-container">
+                    <table>
+                        <thead id="cabecalho-disciplinas"></thead>
+                        <tbody id="tabela-disciplinas"></tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </section>

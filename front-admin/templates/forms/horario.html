@@ -1,0 +1,69 @@
+﻿<!-- Horários -->
+    <section id="horarios" class="secao-recurso" role="tabpanel" aria-labelledby="aba-horarios" tabindex="0">
+        <div class="grade-recurso">
+            <article class="painel formulario-painel">
+                <h2 id="titulo-form-horario">Cadastrar horário</h2>
+                <form id="form-horario" novalidate>
+                    <input id="horario-id" type="hidden">
+
+                    <label for="horario-disciplina">Disciplina</label>
+                    <select id="horario-disciplina" required></select>
+
+                    <label for="horario-dia">Dia da semana</label>
+                    <select id="horario-dia" required>
+                        <option value="">Selecione...</option>
+                        <option>Segunda-feira</option>
+                        <option>Terça-feira</option>
+                        <option>Quarta-feira</option>
+                        <option>Quinta-feira</option>
+                        <option>Sexta-feira</option>
+                        <option>Sábado</option>
+                    </select>
+
+                    <div class="campos-duplos">
+                        <div>
+                            <label for="horario-inicio">Início</label>
+                            <input id="horario-inicio" type="time" required>
+                        </div>
+                        <div>
+                            <label for="horario-fim">Fim</label>
+                            <input id="horario-fim" type="time" required>
+                        </div>
+                    </div>
+
+                    <label for="horario-sala">Sala (opcional)</label>
+                    <input id="horario-sala" maxlength="100" placeholder="Ex.: Laboratório 02">
+
+                    <div class="acoes-formulario">
+                        <button type="submit" class="botao primario">Salvar horário</button>
+                        <button id="cancelar-horario" type="button" class="botao secundario oculto">Cancelar</button>
+                    </div>
+                </form>
+            </article>
+
+            <article class="painel lista-painel">
+                <div class="titulo-lista">
+                    <div>
+                        <h2>Horários cadastrados</h2>
+                        <p>Use o filtro para testar o parâmetro <code>disciplinaId</code>.</p>
+                    </div>
+                    <div class="ferramentas-lista">
+                        <div class="campo-busca">
+                            <label class="visualmente-oculto" for="busca-horarios">Buscar horário</label>
+                            <input id="busca-horarios" type="search" placeholder="Buscar por disciplina, dia ou sala">
+                        </div>
+                        <div class="filtro">
+                            <label for="filtro-horarios">Filtrar</label>
+                            <select id="filtro-horarios"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabela-container">
+                    <table>
+                        <thead id="cabecalho-horarios"></thead>
+                        <tbody id="tabela-horarios"></tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </section>

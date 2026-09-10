@@ -1,0 +1,10 @@
+﻿version: '3.8'
+
+services:
+  bff-painel:
+    build: .
+    container_name: bff-painel
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env

@@ -1,0 +1,49 @@
+﻿<!-- Avisos -->
+    <section id="avisos" class="secao-recurso" role="tabpanel" aria-labelledby="aba-avisos" tabindex="0">
+        <div class="grade-recurso">
+            <article class="painel formulario-painel">
+                <h2 id="titulo-form-aviso">Cadastrar aviso</h2>
+                <form id="form-aviso" novalidate>
+                    <input id="aviso-id" type="hidden">
+
+                    <label for="aviso-disciplina">Disciplina</label>
+                    <select id="aviso-disciplina" required></select>
+
+                    <label for="aviso-titulo">Título</label>
+                    <input id="aviso-titulo" maxlength="150" required placeholder="Ex.: Atividade avaliativa">
+
+                    <label for="aviso-descricao">Descrição</label>
+                    <textarea id="aviso-descricao" maxlength="2000" required rows="5"
+                              placeholder="Digite o conteúdo do aviso"></textarea>
+
+                    <label for="aviso-data">Data de publicação</label>
+                    <input id="aviso-data" type="date" required>
+
+                    <div class="acoes-formulario">
+                        <button type="submit" class="botao primario">Salvar aviso</button>
+                        <button id="cancelar-aviso" type="button" class="botao secundario oculto">Cancelar</button>
+                    </div>
+                </form>
+            </article>
+
+            <article class="painel lista-painel">
+                <div class="titulo-lista">
+                    <div>
+                        <h2>Avisos cadastrados</h2>
+                        <p>Dados retornados como <code>AvisoResponseDTO</code>.</p>
+                    </div>
+                    <div class="ferramentas-lista">
+                        <div class="campo-busca">
+                            <label class="visualmente-oculto" for="busca-avisos">Buscar aviso</label>
+                            <input id="busca-avisos" type="search" placeholder="Buscar por título ou disciplina">
+                        </div>
+                        <div class="filtro">
+                            <label for="filtro-avisos">Filtrar</label>
+                            <select id="filtro-avisos"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="lista-avisos" class="lista-avisos"></div>
+            </article>
+        </div>
+    </section>
