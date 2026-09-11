@@ -1,0 +1,128 @@
+### ClassPath — conferindo a sua API
+#
+# Abra este arquivo no WebStorm e clique no ▶ verde à esquerda de cada
+# requisição. É só um cliente HTTP: não sobe nada, não altera nada.
+#
+# O portal do aluno só faz leitura, então tudo aqui é GET.
+# Os blocos têm asserções automáticas que conferem status, formato da
+# lista e nomes de campo esperados pelo front.
+#
+# Troque de ambiente no seletor do canto superior direito
+# (as opções vêm de http-client.env.json).
+
+@baseUrl = {{host}}
+
+### Disciplinas
+GET {{baseUrl}}/disciplinas
+Accept: application/json
+
+> {%
+    client.test("status 200", () => {
+        client.assert(response.status === 200, "Status foi " + response.status);
+    });
+    client.test("array na raiz", () => {
+        client.assert(Array.isArray(response.body),
+            "O corpo não é um array. Veja a seção 7 de INTEGRACAO.md.");
+    });
+    client.test("campos id, nome e professor", () => {
+        const item = response.body[0];
+        if (!item) return;
+        ["id", "nome", "professor"].forEach((campo) => {
+            client.assert(campo in item, "Falta o campo '" + campo + "'");
+        });
+        client.global.set("disciplinaId", item.id);
+    });
+%}
+
+### Horários — lista completa
+GET {{baseUrl}}/horarios
+Accept: application/json
+
+> {%
+    client.test("campos esperados pela grade", () => {
+        const item = response.body[0];
+        if (!item) return;
+        ["disciplinaId", "disciplinaNome", "diaSemana", "horarioInicio", "horarioFim"]
+            .forEach((campo) => {
+                client.assert(campo in item, "Falta o campo '" + campo + "'");
+            });
+    });
+    client.test("diaSemana no formato esperado", () => {
+        const validos = ["Segunda-feira", "Terça-feira", "Quarta-feira",
+                         "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"];
+        const fora = response.body.filter((h) => !validos.includes(h.diaSemana));
+        client.assert(fora.length === 0,
+            "Valores fora do esperado: " + fora.map((h) => h.diaSemana).join(", "));
+    });
+%}
+
+### Horários — filtrado por disciplina
+GET {{baseUrl}}/horarios?disciplinaId={{disciplinaId}}
+Accept: application/json
+
+> {%
+    client.test("o filtro foi respeitado", () => {
+        const alvo = client.global.get("disciplinaId");
+        const fora = response.body.filter((h) => String(h.disciplinaId) !== String(alvo));
+        client.assert(fora.length === 0,
+            "Vieram " + fora.length + " horários de outra disciplina");
+    });
+%}
+
+### Avisos — lista completa
+GET {{baseUrl}}/avisos
+Accept: application/json
+
+> {%
+    client.test("campos esperados pelo cartão de aviso", () => {
+        const item = response.body[0];
+        if (!item) return;
+        ["disciplinaNome", "titulo", "descricao", "dataPublicacao"].forEach((campo) => {
+            client.assert(campo in item, "Falta o campo '" + campo + "'");
+        });
+    });
+    client.test("dataPublicacao em YYYY-MM-DD", () => {
+        const item = response.body[0];
+        if (!item) return;
+        client.assert(/^\d{4}-\d{2}-\d{2}$/.test(item.dataPublicacao),
+            "Veio '" + item.dataPublicacao + "'. Se tem hora ou fuso, veja INTEGRACAO.md seção 7.");
+    });
+    client.test("algum aviso tem arquivo anexo?", () => {
+        const comArquivo = response.body.filter(
+            (a) => a.arquivoUrl || a.arquivo || (Array.isArray(a.anexos) && a.anexos.length));
+        client.log(comArquivo.length + " aviso(s) com arquivo. "
+            + "Se for 0, o botão de download não aparece — e isso está correto.");
+        if (comArquivo[0]) {
+            const url = comArquivo[0].arquivoUrl
+                || comArquivo[0].arquivo?.url
+                || comArquivo[0].anexos[0]?.url;
+            client.global.set("arquivoUrl", url);
+            client.log("URL do primeiro arquivo: " + url);
+        }
+    });
+%}
+
+### Avisos — filtrado por disciplina
+GET {{baseUrl}}/avisos?disciplinaId={{disciplinaId}}
+Accept: application/json
+
+### Arquivo anexo — o download vai funcionar?
+# Só roda se o bloco de avisos encontrou algum arquivo.
+# Se a URL do seu arquivo for absoluta, troque {{baseUrl}} por nada.
+GET {{baseUrl}}{{arquivoUrl}}
+
+> {%
+    client.test("o arquivo é servido", () => {
+        client.assert(response.status === 200, "Status foi " + response.status);
+    });
+    client.test("Content-Disposition: attachment", () => {
+        const cabecalho = response.headers.valueOf("Content-Disposition") || "";
+        client.assert(cabecalho.toLowerCase().includes("attachment"),
+            "Sem esse cabeçalho o navegador abre o arquivo em vez de baixar. Veio: '"
+            + cabecalho + "'");
+    });
+%}
+
+### Endpoint inexistente — deve responder 404, não 200 com HTML
+GET {{baseUrl}}/disciplinas/999999
+Accept: application/json

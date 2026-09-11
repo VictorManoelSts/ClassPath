@@ -1,0 +1,13 @@
+services:
+  front-aluno:
+    build:
+      context: .
+      args:
+        VITE_API_URL: "${VITE_API_URL:-http://localhost:8080/api}"
+        VITE_PERIODO: "${VITE_PERIODO:-2026.2}"
+
+    container_name: classpath-front-aluno
+    restart: unless-stopped
+
+    ports:
+      - "5173:80"
