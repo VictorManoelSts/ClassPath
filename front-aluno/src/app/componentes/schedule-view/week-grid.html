@@ -1,0 +1,50 @@
+@if (!grade().dias.length) {
+  <app-schedule-list [horarios]="horarios()" />
+} @else {
+  <div class="week-grid">
+    <div class="week-grid-inner" [style.--colunas]="colunas()" [style.--altura]="altura()">
+      <div class="week-hours" aria-hidden="true">
+        <div class="week-corner"></div>
+        <div class="week-hours-body">
+          @for (hora of grade().horas; track hora.minuto) {
+            <span class="week-hour" [style.top.px]="hora.topo">{{ hora.rotulo }}</span>
+          }
+        </div>
+      </div>
+
+      @for (coluna of grade().dias; track coluna.dia) {
+        <div class="week-day">
+          <div class="week-day-head">{{ abreviar(coluna.dia) }}</div>
+          <div class="week-day-body">
+            @for (hora of linhas(); track hora.minuto) {
+              <div class="week-line" [style.top.px]="hora.topo" aria-hidden="true"></div>
+            }
+
+            @for (aula of coluna.aulas; track aula.id) {
+              <article
+                class="week-class"
+                [style.top.px]="aula.topo"
+                [style.height.px]="aula.altura"
+              >
+                <strong>{{ aula.disciplinaNome }}</strong>
+                <span class="week-class-time">
+                  {{ intervalo(aula.horarioInicio, aula.horarioFim) }}
+                </span>
+                @if (aula.sala) {
+                  <span class="week-class-room">{{ aula.sala }}</span>
+                }
+              </article>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (semHorario().length > 0) {
+    <p class="week-note">
+      {{ semHorario().length }} {{ semHorario().length === 1 ? "aula está" : "aulas estão" }} sem
+      horário válido e {{ semHorario().length === 1 ? "não aparece" : "não aparecem" }} na grade.
+    </p>
+  }
+}

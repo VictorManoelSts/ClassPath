@@ -1,0 +1,64 @@
+{
+  "name": "classpath-front-aluno",
+  "private": true,
+  "version": "3.0.0",
+  "description": "Portal do aluno do ClassPath — Angular",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "ng": "ng",
+    "dev": "ng serve",
+    "start": "ng serve",
+    "build": "ng build",
+    "preview": "ng build --configuration development && npx --yes http-server dist/front-aluno/browser -p 4173",
+    "config": "node scripts/set-env.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,html,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,css}\"",
+    "test": "ng test",
+    "test:watch": "ng test --watch",
+    "test:cobertura": "ng test --code-coverage",
+    "verificar": "npm run lint && npm run format:check && npm run test && npm run build"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "dependencies": {
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.37",
+    "@angular/cli": "^20.3.37",
+    "@angular/compiler-cli": "^20.3.0",
+    "@eslint/js": "^9.39.0",
+    "@vitest/coverage-v8": "^3.2.7",
+    "angular-eslint": "^20.7.0",
+    "eslint": "^9.39.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,110 @@
+<div class="app-shell">
+  <a class="pular-para-conteudo" href="#inicio">Pular para o conteúdo</a>
+
+  @if (!online()) {
+    <div class="offline-bar" role="status">
+      Você está sem conexão. Os dados na tela podem estar desatualizados.
+    </div>
+  }
+
+  <app-topbar />
+
+  <main id="inicio" class="page-content" tabindex="-1">
+    <section class="welcome-row">
+      <div>
+        <span class="welcome-date">{{ hoje }}</span>
+        <h1>Sua rotina acadêmica em um só lugar</h1>
+        <p>Consulte disciplinas, horários, avisos e materiais disponíveis para download.</p>
+      </div>
+      <div class="academic-period">
+        <span>Período</span>
+        <strong>{{ periodo }}</strong>
+      </div>
+    </section>
+
+    <app-filter-bar
+      [disciplinas]="disciplinas()"
+      [disciplinaId]="disciplinaId()"
+      [desabilitado]="semSeletor()"
+      (alterar)="alterarDisciplina($event)"
+    />
+
+    @if (erro()) {
+      <app-error-state [mensagem]="erro()" (tentarNovamente)="recarregar()" />
+    }
+
+    <app-summary-grid
+      [disciplinas]="totalDisciplinas()"
+      [aulas]="horarios().length"
+      [avisos]="avisos().length"
+      [materiais]="materiais().length"
+    />
+
+    <section id="disciplinas" class="content-section">
+      <div class="section-heading">
+        <h2>{{ disciplinaSelecionada()?.nome || "Disciplinas" }}</h2>
+        @if (disciplinaSelecionada()) {
+          <span class="active-filter">Filtro ativo</span>
+        }
+      </div>
+
+      <app-discipline-list
+        [disciplinas]="disciplinasVisiveis()"
+        [carregando]="primeiraCarga()"
+        [temFiltro]="!!disciplinaSelecionada()"
+        (selecionar)="alterarDisciplina($event)"
+      />
+    </section>
+
+    <section id="horarios" class="content-section">
+      <div class="section-heading">
+        <h2>Grade de horários</h2>
+        <span class="section-count">
+          {{ horarios().length }} {{ horarios().length === 1 ? "aula" : "aulas" }}
+        </span>
+      </div>
+
+      <div [class.is-revalidating]="revalidando()">
+        <app-schedule-view [horarios]="horarios()" [carregando]="primeiraCarga()" />
+      </div>
+    </section>
+
+    <section id="materiais" class="content-section">
+      <div class="section-heading">
+        <h2>Materiais</h2>
+        <span class="section-count">
+          {{ materiais().length }} {{ materiais().length === 1 ? "arquivo" : "arquivos" }}
+        </span>
+      </div>
+
+      <app-material-list
+        [materiais]="materiais()"
+        [disciplinas]="disciplinas()"
+        [carregando]="materiaisCarregando()"
+        [erro]="materiaisErro()"
+        (tentarNovamente)="recarregarMateriais()"
+      />
+    </section>
+
+    <section id="avisos" class="content-section">
+      <div class="section-heading">
+        <h2>Avisos</h2>
+        <span class="section-count">
+          {{ avisos().length }} {{ avisos().length === 1 ? "aviso" : "avisos" }}
+        </span>
+      </div>
+
+      <div [class.is-revalidating]="revalidando()">
+        <app-notice-list [avisos]="avisos()" [carregando]="primeiraCarga()" />
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <span aria-hidden="true">CP</span>
+      <strong>ClassPath</strong>
+    </div>
+    <p>Disciplinas, horários, materiais e avisos do período {{ periodo }}.</p>
+  </footer>
+</div>

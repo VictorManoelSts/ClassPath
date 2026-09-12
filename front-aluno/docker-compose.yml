@@ -1,0 +1,14 @@
+services:
+  front-aluno:
+    build:
+      context: .
+      args:
+        API_URL: "${API_URL:-http://localhost:8080/api}"
+        MATERIAIS_API_URL: "${MATERIAIS_API_URL:-http://localhost:8000/api}"
+        PERIODO: "${PERIODO:-2026.2}"
+
+    container_name: classpath-front-aluno
+    restart: unless-stopped
+
+    ports:
+      - "5173:80"
