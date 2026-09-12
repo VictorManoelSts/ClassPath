@@ -1,0 +1,58 @@
+@if (anexos().length) {
+  <ul class="attachment-list">
+    @for (anexo of anexos(); track anexo.id) {
+      <li>
+        <a
+          class="attachment"
+          [href]="anexo.href"
+          [attr.download]="anexo.nome"
+          rel="noopener noreferrer"
+          [attr.aria-label]="anexo.rotulo"
+        >
+          <span class="attachment-icon" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+              <path d="M10 9H8" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+            </svg>
+          </span>
+
+          <span class="attachment-info">
+            <span class="attachment-name">{{ anexo.nome }}</span>
+            <span class="attachment-meta">{{ anexo.meta }}</span>
+          </span>
+
+          <span class="attachment-action" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+          </span>
+        </a>
+      </li>
+    }
+  </ul>
+}
