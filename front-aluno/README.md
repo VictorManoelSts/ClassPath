@@ -1,118 +1,207 @@
-# ClassPath — Portal do aluno (Angular)
+## Estrutura do Front do Aluno
 
-Front-end do aluno do ClassPath: consulta de disciplinas, grade de horários, avisos e
-materiais disponíveis para download. A versão em **Angular 20** preserva a identidade
-visual do front anterior e integra separadamente o Back Acadêmico e o Back Materiais.
+O Front do Aluno é a interface usada pelos estudantes para consultar as informações acadêmicas do ClassPath.
 
-## Requisitos
+Ele foi desenvolvido com Angular e se comunica com dois back-ends:
 
-- Node.js 20.19+ (ou 22.12+)
-- Back Acadêmico em `http://localhost:8080/api`
-- Back Materiais em `http://localhost:8000/api`
+- **Back Acadêmico:** fornece disciplinas, horários e avisos.
+- **Back de Materiais:** fornece a lista de materiais e permite baixar arquivos.
 
-## Rodando
+### Estrutura principal
 
-```bash
-npm install
-npm run dev          # http://localhost:5173
+```text
+front-aluno/
+├── public/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   ├── core/
+│   │   ├── app.html
+│   │   └── app.ts
+│   ├── main.ts
+│   └── styles.css
+├── .env.example
+├── angular.json
+├── docker-compose.yml
+├── Dockerfile
+├── nginx.conf
+├── package.json
+├── package-lock.json
+└── tsconfig.json
 ```
 
-O endereço da API fica em `src/environments/`. Para apontar para outro servidor sem
-editar código:
+### Explicação das pastas e arquivos
 
-```bash
-API_URL=http://192.168.0.10:8080/api \
-MATERIAIS_API_URL=http://192.168.0.10:8000/api \
-PERIODO=2026.2 npm run config
+#### `src/`
+
+Contém o código-fonte principal da aplicação Angular.
+
+#### `src/app/`
+
+Contém a estrutura da aplicação, seus componentes, serviços e a página principal.
+
+#### `src/app/components/`
+
+Contém os componentes visuais da aplicação. Cada componente representa uma parte da interface, como:
+
+- lista de disciplinas;
+- grade de horários;
+- lista de avisos;
+- lista de materiais;
+- filtros;
+- mensagens de carregamento e erro.
+
+O componente de materiais mostra os arquivos relacionados à disciplina selecionada e fornece a opção de download.
+
+#### `src/app/core/`
+
+Contém os serviços responsáveis pela comunicação com as APIs.
+
+Entre eles está o serviço de materiais, que consulta o Back de Materiais para carregar os arquivos disponíveis.
+
+Os serviços evitam colocar requisições HTTP diretamente nos componentes, deixando o projeto mais organizado.
+
+#### `src/app/app.ts`
+
+É o componente principal da aplicação. Ele controla a página, os dados selecionados e a integração entre os diferentes componentes.
+
+#### `src/app/app.html`
+
+Define a estrutura visual da página principal, incluindo as seções de disciplinas, horários, avisos e materiais.
+
+#### `src/main.ts`
+
+É o ponto de entrada do Angular. Esse arquivo inicia a aplicação no navegador.
+
+#### `src/styles.css`
+
+Contém os estilos globais usados pela aplicação.
+
+#### `public/`
+
+Contém arquivos públicos e estáticos, como imagens e ícones.
+
+#### `.env.example`
+
+É um exemplo das variáveis de ambiente necessárias para executar o projeto.
+
+O arquivo `.env` real deve ser criado localmente e não deve conter senhas ou informações privadas enviadas ao GitHub.
+
+Exemplo:
+
+```env
+API_URL=http://localhost:8080/api
+MATERIAIS_API_URL=http://localhost:8000/api
+PERIODO=2026.2
 ```
 
-O Front Aluno consulta `GET /disciplinas`, `GET /horarios` e `GET /avisos` no Back
-Acadêmico. Os materiais são consultados separadamente em `GET /materiais` no Back
-Materiais. Ao selecionar uma disciplina, o filtro é enviado como
-`GET /materiais?disciplina={id}`. O download usa `GET /materiais/{file_id}`.
+#### `package.json`
 
-## Scripts
+Contém as dependências, informações e comandos do projeto Angular.
 
-| Script               | O que faz                                   |
-| -------------------- | ------------------------------------------- |
-| `npm run dev`        | Servidor de desenvolvimento na porta 5173   |
-| `npm run build`      | Build de produção em `dist/front-aluno`     |
-| `npm test`           | Testes (Vitest + jsdom)                     |
-| `npm run test:cobertura` | Testes com relatório de cobertura       |
-| `npm run lint`       | ESLint (TypeScript + templates)             |
-| `npm run format`     | Prettier                                    |
-| `npm run config`     | Regrava `src/environments` a partir do ambiente |
-| `npm run verificar`  | lint + format:check + test + build          |
+#### `package-lock.json`
 
-## Docker
+Registra as versões exatas das dependências instaladas para que todos os integrantes utilizem as mesmas versões.
 
-```bash
-docker compose up --build     # http://localhost:5173
+#### `angular.json`
+
+Contém as configurações de compilação e execução do Angular.
+
+#### `Dockerfile`
+
+Define como a imagem Docker do Front do Aluno será construída.
+
+O processo possui duas etapas:
+
+1. O Node.js instala as dependências e gera a versão de produção do Angular.
+2. O Nginx disponibiliza os arquivos gerados para o navegador.
+
+#### `docker-compose.yml`
+
+Configura o contêiner do Front do Aluno, suas variáveis de ambiente e a porta utilizada.
+
+Por padrão, o front fica disponível em:
+
+```text
+http://localhost:5173
 ```
 
-O `Dockerfile` aceita `API_URL`, `MATERIAIS_API_URL` e `PERIODO` como build args. O
-script de configuração também aceita os nomes antigos `VITE_API_URL`,
-`VITE_MATERIAIS_API_URL` e `VITE_PERIODO`.
+#### `nginx.conf`
 
-## Estrutura
+Configura o Nginx responsável por disponibilizar a aplicação Angular dentro do contêiner.
 
-```
-src/
-├── index.html              tema aplicado antes da primeira pintura
-├── styles.css              cópia byte a byte do CSS da versão React
-├── environments/           URLs das duas APIs e período
-└── app/
-    ├── app.ts / app.html   componente raiz
-    ├── core/
-    │   ├── api.ts                    fetch com timeout, cache curto e garantia de lista
-    │   ├── modelos.ts                tipos acadêmicos, Material e Anexo
-    │   ├── dados-academicos.service.ts
-    │   ├── materiais.service.ts      listagem filtrada no Back Materiais
-    │   ├── filtro-url.service.ts     filtro sincronizado com a query string
-    │   ├── online.service.ts
-    │   ├── tema.service.ts
-    │   └── titulo.service.ts
-    ├── utils/              formato.ts, anexos.ts, grade.ts (funções puras)
-    └── componentes/        inclui a listagem e download de materiais
+## Comunicação com os back-ends
+
+### Back Acadêmico
+
+Endereço padrão:
+
+```text
+http://localhost:8080/api
 ```
 
-## De React para Angular
+Fornece:
 
-| Antes (React)              | Agora (Angular)                                  |
-| -------------------------- | ------------------------------------------------ |
-| `useState` / `useMemo`     | `signal()` / `computed()`                        |
-| `useEffect`                | `effect()` com função de limpeza                 |
-| `useDadosAcademicos`       | `DadosAcademicosService`                          |
-| `useFiltroNaUrl`           | `FiltroUrlService`                                |
-| `useTema` / `useOnline`    | `TemaService` / `OnlineService`                   |
-| `useTituloDaPagina`        | `TituloService` sobre o `Title` do Angular        |
-| props / callbacks          | `input()` / `output()`                            |
-| `lucide-react`             | SVG inline com os mesmos desenhos                 |
-| `import.meta.env.VITE_*`   | `src/environments` + `scripts/set-env.mjs`        |
-| Vitest + Testing Library   | Vitest + jsdom pelo builder `@angular/build:unit-test` |
+- disciplinas;
+- horários;
+- avisos.
 
-Três decisões que valem a explicação:
+### Back de Materiais
 
-- **`:host { display: contents }` em todos os componentes.** O Angular cria um elemento
-  extra (`<app-topbar>`, `<app-filter-bar>`…) que o React não criava. Sem `display: contents`
-  esse elemento entraria no fluxo de flex e grid e quebraria o layout — por exemplo, o
-  `.app-shell` é `flex-direction: column` e o `.page-content` usa `flex: 1`.
-- **SVG inline no lugar do `lucide-react`.** O `lucide-angular` envolveria o `<svg>` num
-  elemento próprio, e o CSS tem regras de filho direto (`.select-wrap > svg`,
-  `.empty-state > svg`) que deixariam de casar. No `EmptyState` o ícone entra por projeção
-  de conteúdo justamente para continuar sendo filho direto.
-- **`[selected]` nas `<option>`, não `[value]` no `<select>`.** As disciplinas chegam da API
-  depois da primeira pintura. Um `[value]` no `<select>` é avaliado uma vez, quando ainda não
-  há opções, e abrir o portal em `?disciplina=2` mostraria "Todas as disciplinas".
-  Há um teste cobrindo exatamente esse caso.
+Endereço padrão:
 
-## Testes
-
-62 testes cobrindo as funções puras (formato, anexos, grade), a camada das duas APIs
-(URLs, cache separado, timeout e mensagens de erro) e a tela montada (filtro na URL,
-título da aba, estado de erro, troca grade/lista, consulta e download de materiais,
-download de anexo, tema, offline e botão voltar).
-
-```bash
-npm test
+```text
+http://localhost:8000/api
 ```
+
+Fornece:
+
+- materiais cadastrados;
+- materiais filtrados por disciplina;
+- download dos arquivos.
+
+Quando o aluno seleciona uma disciplina, o front pode realizar uma requisição semelhante a:
+
+```http
+GET /api/materiais?disciplina=1
+```
+
+Para baixar um material, é utilizado:
+
+```http
+GET /api/materiais/{id}
+```
+
+O envio e a exclusão de materiais são realizados pelo painel administrativo. O Front do Aluno é responsável apenas pela consulta e pelo download.
+
+## Fluxo de funcionamento
+
+1. O aluno abre o sistema.
+2. O front consulta as disciplinas no Back Acadêmico.
+3. O aluno pode selecionar uma disciplina.
+4. O front busca os horários e avisos correspondentes.
+5. O serviço de materiais consulta o Back de Materiais usando o ID da disciplina.
+6. Os arquivos encontrados são exibidos na seção de materiais.
+7. Ao clicar em baixar, o navegador solicita o arquivo ao Back de Materiais.
+
+## Execução com Docker
+
+Na pasta que contém o `docker-compose.yml`, execute:
+
+```powershell
+docker compose --env-file ".env" up --build -d
+```
+
+Para verificar o contêiner:
+
+```powershell
+docker compose ps
+```
+
+Para encerrar:
+
+```powershell
+docker compose down
+```
+
+O comando `docker compose down` encerra o front sem apagar os bancos de dados dos outros serviços.
