@@ -1,4 +1,1435 @@
-﻿body {
-    margin: 0;
+﻿/* =========================================================
+   REGRA GERAL
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* =========================================================
+   GERAL
+========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  width: 100%;
+  padding: 20px 6%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  position: relative;
+  z-index: 1000;
+}
+
+.logo h1 {
+  color: #2563eb;
+  font-size: 26px;
+}
+
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  color: #475569;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #2563eb;
+}
+
+/* =========================================================
+   BOTÃO MENU MOBILE
+========================================================= */
+
+.menu-mobile {
+  display: none;
+  border: none;
+  background-color: transparent;
+  color: #2563eb;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   HERO - HOME
+========================================================= */
+
+.hero {
+  min-height: 550px;
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.hero-texto {
+  width: 100%;
+}
+
+.hero h2 {
+  font-size: 52px;
+  line-height: 1.1;
+  color: #0f172a;
+  margin-bottom: 25px;
+}
+
+.hero h2 span {
+  color: #2563eb;
+}
+
+.subtitulo {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.hero-texto > p:not(.subtitulo) {
+  font-size: 18px;
+  color: #64748b;
+  max-width: 650px;
+  margin: 0 auto 35px;
+}
+
+/* =========================================================
+   HERO - EQUIPE
+========================================================= */
+
+.hero-equipe {
+  min-height: calc(100vh - 85px);
+  width: 100%;
+  max-width: none;
+  padding: 50px 6%;
+}
+
+/* =========================================================
+   BOTÃO
+========================================================= */
+
+.botao {
+  display: inline-block;
+  padding: 13px 25px;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.botao:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 0;
+}
+
+/* =========================================================
+   TÍTULOS
+========================================================= */
+
+.titulo {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 60px;
+}
+
+.titulo h2 {
+  font-size: 38px;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.conteudo {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.texto {
+  flex: 1;
+}
+
+.texto p {
+  color: #64748b;
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+.texto h2 {
+  color: #0f172a;
+  font-size: 38px;
+  line-height: 1.2;
+  margin-bottom: 25px;
+}
+
+.imagem {
+  flex: 1;
+  min-width: 0;
+}
+
+.imagem img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 15px;
+}
+
+/* =========================================================
+   PROBLEMAS
+========================================================= */
+
+.problemas {
+  background-color: #ffffff;
+}
+
+.fontes {
+  display: flex;
+  gap: 25px;
+}
+
+.card {
+  flex: 1;
+  padding: 30px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card span {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.card h3 {
+  color: #0f172a;
+  font-size: 20px;
+  margin: 15px 0 10px;
+}
+
+.card p {
+  color: #64748b;
+}
+
+/* =========================================================
+   SOLUÇÃO
+========================================================= */
+
+.reverso {
+  flex-direction: row;
+}
+
+/* =========================================================
+   OBJETIVOS
+========================================================= */
+
+.objetivos {
+  background-color: #ffffff;
+}
+
+.cards {
+  display: flex;
+  gap: 25px;
+}
+
+.icone {
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+/* =========================================================
+   RESULTADO ESPERADO
+========================================================= */
+
+.resultado-secao {
+  width: 100%;
+  min-height: 100vh;
+  padding: 100px 6%;
+  background-color: #f1f5f9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultado {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 80px;
+  min-height: 120vh;
+}
+
+.resultado .texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.resultado .texto .subtitulo {
+  margin-bottom: 20px;
+}
+
+.resultado .texto h2 {
+  color: #0f172a;
+  font-size: 38px;
+  line-height: 1.2;
+  margin-bottom: 25px;
+}
+
+.resultado .texto p:not(.subtitulo) {
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.resultado .imagem {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultado .imagem img {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  display: block;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+  background-color: #020617;
+  color: white;
+}
+
+.rodape {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 0;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.rodape div {
+  flex: 1;
+}
+
+.rodape h3 {
+  margin-bottom: 15px;
+}
+
+.rodape p {
+  color: #94a3b8;
+}
+
+.rodape a {
+  display: block;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+.rodape a:hover {
+  color: #60a5fa;
+}
+
+/* =========================================================
+   PÁGINA DA EQUIPE
+========================================================= */
+
+.equipe {
+  width: 100%;
+  min-height: calc(100vh - 85px);
+  padding: 60px 6%;
+  background-color: #f1f5f9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.equipe-container {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* =========================================================
+   CARD DA EQUIPE
+========================================================= */
+
+.card-equipe {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 8px 8px 18px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+
+.card-equipe:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-equipe img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.card-equipe strong {
+  display: block;
+  font-size: 17px;
+  margin-top: 12px;
+}
+
+.card-equipe span {
+  display: block;
+  color: #1647a5;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.card-equipe p {
+  font-size: 13px;
+  color: #444;
+  margin-top: 12px;
+}
+
+/* =========================================================
+   TECNOLOGIAS
+========================================================= */
+
+.tecnologias {
+  width: 100%;
+  min-height: calc(100vh - 85px);
+  padding: 80px 6%;
+  background-color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+}
+
+.tecnologias-conteudo {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.tecnologias h2 {
+  color: #1647a5;
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.tecnologias-conteudo > p {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  color: #64748b;
+}
+
+/* =========================================================
+   CARROSSEL
+========================================================= */
+
+.carousel {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel-container {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: deslizar 20s linear infinite;
+}
+
+@keyframes deslizar {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================================
+   CARD DE TECNOLOGIA
+========================================================= */
+
+.tech-card {
+  width: 130px;
+  height: 120px;
+  flex-shrink: 0;
+
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tech-card img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.tech-card strong {
+  font-size: 14px;
+  color: #1e293b;
+}
+
+/* =========================================================
+   PÁGINA CRONOGRAMA
+========================================================= */
+
+.pagina-cronograma {
+  background-color: #f8fafc;
+  padding-bottom: 70px;
+}
+
+/* =========================================================
+   INTRODUÇÃO
+========================================================= */
+
+.pagina-cronograma .intro {
+  width: 90%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 70px 20px 50px;
+  text-align: center;
+}
+
+.pagina-cronograma .intro .subtitulo {
+  display: block;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  margin-bottom: 15px;
+}
+
+.pagina-cronograma .intro h1 {
+  font-size: 52px;
+  line-height: 1.1;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+.pagina-cronograma .intro p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   CRONOGRAMA
+========================================================= */
+
+.pagina-cronograma .cronograma {
+  width: 90%;
+  max-width: 850px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pagina-cronograma .cronograma::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 40px;
+  bottom: 40px;
+  width: 4px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    to bottom,
+    #2563eb,
+    #7c3aed,
+    #06b6d4,
+    #f97316,
+    #16a34a
+  );
+}
+
+.pagina-cronograma .etapa {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 35px;
+  margin-bottom: 30px;
+}
+
+.pagina-cronograma .numero {
+  position: relative;
+  z-index: 2;
+
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: bold;
+
+  border: 5px solid #f8fafc;
+}
+
+.numero-azul {
+  background-color: #2563eb;
+}
+
+.numero-roxo {
+  background-color: #7c3aed;
+}
+
+.numero-ciano {
+  background-color: #06b6d4;
+}
+
+.numero-laranja {
+  background-color: #f97316;
+}
+
+.numero-verde {
+  background-color: #16a34a;
+}
+
+/* =========================================================
+   CARD DAS ETAPAS
+========================================================= */
+
+.pagina-cronograma .card-etapa {
+  flex: 1;
+  min-height: 180px;
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 25px;
+
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  box-shadow: 0 10px 30px rgba(30, 60, 110, 0.07);
+
+  transition: 0.3s;
+}
+
+.pagina-cronograma .card-etapa:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================================================
+   ÍCONES DAS ETAPAS
+========================================================= */
+
+.pagina-cronograma .icone {
+  width: 75px;
+  height: 75px;
+  min-width: 75px;
+
+  margin-bottom: 0;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+}
+
+.pagina-cronograma .icone-planejamento {
+  color: #2563eb;
+  background-color: #dbeafe;
+}
+
+.pagina-cronograma .icone-design {
+  color: #7c3aed;
+  background-color: #ede9fe;
+}
+
+.pagina-cronograma .icone-desenvolvimento {
+  color: #0891b2;
+  background-color: #cffafe;
+}
+
+.pagina-cronograma .icone-testes {
+  color: #ea580c;
+  background-color: #ffedd5;
+}
+
+.pagina-cronograma .icone-entrega {
+  color: #16a34a;
+  background-color: #dcfce7;
+}
+
+/* =========================================================
+   CONTEÚDO DAS ETAPAS
+========================================================= */
+
+.pagina-cronograma .conteudo-etapa {
+  flex: 1;
+}
+
+.pagina-cronograma .titulo-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.pagina-cronograma .conteudo-etapa h2 {
+  color: #1e293b;
+  font-size: 23px;
+}
+
+.pagina-cronograma .conteudo-etapa p {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.pagina-cronograma .status {
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+.pagina-cronograma .status.concluido {
+  color: #15803d;
+  background-color: #dcfce7;
+}
+
+/* =========================================================
+   DATA
+========================================================= */
+
+.pagina-cronograma .data {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   FERRAMENTAS - CRONOGRAMA
+========================================================= */
+
+.pagina-cronograma .tecnologias {
+  width: 90%;
+  max-width: 1100px;
+
+  min-height: auto;
+
+  margin: 70px auto 0;
+  padding: 70px 20px;
+
+  display: block;
+
+  text-align: center;
+
+  background-color: transparent;
+  border: none;
+}
+
+.pagina-cronograma .tecnologias .subtitulo {
+  display: block;
+
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 3px;
+
+  margin-bottom: 12px;
+}
+
+.pagina-cronograma .tecnologias h1 {
+  color: #1c3157;
+  font-size: 36px;
+  line-height: 1.2;
+
+  margin-bottom: 15px;
+}
+
+.pagina-cronograma .tecnologias > p {
+  max-width: 700px;
+
+  margin: 0 auto 35px;
+
+  color: #64748b;
+  font-size: 19px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   CARDS DAS FERRAMENTAS
+========================================================= */
+
+.pagina-cronograma .cards-tecnologias {
+  display: flex;
+
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 18px;
+}
+
+.pagina-cronograma .card-tecnologia {
+  width: 130px;
+  min-height: 130px;
+
+  padding: 20px 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  background-color: #ffffff;
+
+  border: 1px solid #dce5f0;
+  border-radius: 16px;
+
+  box-shadow: 0 8px 22px rgba(30, 60, 110, 0.07);
+
+  transition: 0.3s;
+}
+
+.pagina-cronograma .card-tecnologia:hover {
+  transform: translateY(-6px);
+
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.12);
+}
+
+.pagina-cronograma .card-tecnologia i {
+  font-size: 42px;
+}
+
+.pagina-cronograma .card-tecnologia span {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   LINGUAGENS - CRONOGRAMA
+========================================================= */
+
+.pagina-cronograma .linguagens {
+  width: 90%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+  padding: 40px 20px 70px;
+
+  text-align: center;
+}
+
+.pagina-cronograma .linguagens .subtitulo {
+  display: block;
+
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 3px;
+
+  margin-bottom: 12px;
+}
+
+.pagina-cronograma .linguagens h1 {
+  color: #1c3157;
+  font-size: 36px;
+
+  line-height: 1.2;
+
+  margin-bottom: 15px;
+}
+
+.pagina-cronograma .linguagens > p {
+  max-width: 700px;
+
+  margin: 0 auto 35px;
+
+  color: #64748b;
+  font-size: 19px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   CARDS DAS LINGUAGENS
+========================================================= */
+
+.pagina-cronograma .cards-linguagens {
+  display: flex;
+
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 18px;
+}
+
+.pagina-cronograma .card-linguagem {
+  width: 120px;
+  min-height: 130px;
+
+  padding: 20px 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  background-color: #ffffff;
+
+  border: 1px solid #dce5f0;
+  border-radius: 16px;
+
+  box-shadow: 0 8px 22px rgba(30, 60, 110, 0.07);
+
+  transition: 0.3s;
+}
+
+.pagina-cronograma .card-linguagem:hover {
+  transform: translateY(-6px);
+
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.12);
+}
+
+.pagina-cronograma .card-linguagem i {
+  font-size: 42px;
+}
+
+.pagina-cronograma .card-linguagem span {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   CORES DOS ÍCONES
+========================================================= */
+
+.html {
+  color: #e34f26;
+}
+
+.css {
+  color: #1572b6;
+}
+
+.javascript {
+  color: #f7df1e;
+}
+
+.react {
+  color: #61dafb;
+}
+
+.node {
+  color: #539e43;
+}
+
+.mysql {
+  color: #00758f;
+}
+
+.github {
+  color: #24292e;
+}
+
+.figma {
+  color: #a259ff;
+}
+
+.vscode {
+  color: #007acc;
+}
+
+.python {
+  color: #3776ab;
+}
+
+.java {
+  color: #e76f00;
+}
+
+.sql {
+  color: #2563eb;
+}
+
+/* =========================================================
+   RESPONSIVIDADE - TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  /* HEADER */
+
+  header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 18px 6%;
+  }
+
+  /* BOTÃO MENU */
+
+  .menu-mobile {
+    display: block;
+  }
+
+  /* MENU */
+
+  header nav {
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 0;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* MENU ABERTO */
+
+  header nav.ativo {
+    display: flex;
+  }
+
+  /* LINKS DO MENU */
+
+  header nav a {
+    width: 100%;
+
+    padding: 15px 6%;
+
+    font-size: 16px;
+
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  header nav a:last-child {
+    border-bottom: none;
+  }
+
+  /* HERO */
+
+  .hero {
+    min-height: auto;
+    padding: 60px 6%;
+  }
+
+  .hero h2 {
+    font-size: 38px;
+  }
+
+  /* HERO EQUIPE */
+
+  .hero-equipe {
+    min-height: calc(100vh - 85px);
+  }
+
+  /* CONTEÚDO */
+
+  .conteudo {
+    flex-direction: column;
+    gap: 35px;
+  }
+
+  .reverso {
+    flex-direction: column;
+  }
+
+  /* PROBLEMAS */
+
+  .fontes {
+    flex-direction: column;
+  }
+
+  /* OBJETIVOS */
+
+  .cards {
+    flex-direction: column;
+  }
+
+  /* RESULTADO */
+
+  .resultado-secao {
+    min-height: auto;
+    padding: 80px 6%;
+  }
+
+  .resultado {
+    flex-direction: column;
+    gap: 45px;
+    text-align: center;
+  }
+
+  .resultado .texto {
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .resultado .texto h2 {
+    font-size: 34px;
+  }
+
+  .resultado .imagem {
+    width: 100%;
+  }
+
+  .resultado .imagem img {
+    max-width: 400px;
+  }
+
+  /* EQUIPE */
+
+  .equipe {
+    min-height: auto;
+    padding: 60px 6%;
+  }
+
+  .equipe-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* TECNOLOGIAS */
+
+  .tecnologias {
+    min-height: auto;
+    padding: 70px 6%;
+  }
+
+  /* FOOTER */
+
+  .rodape {
+    flex-direction: column;
+  }
+
+  /* CRONOGRAMA */
+
+  .pagina-cronograma .intro {
+    padding: 60px 6% 40px;
+  }
+
+  .pagina-cronograma .intro h1 {
+    font-size: 42px;
+  }
+
+  .pagina-cronograma .cronograma::before {
+    left: 28px;
+  }
+
+  .pagina-cronograma .etapa {
+    gap: 25px;
+  }
+
+  .pagina-cronograma .card-etapa {
+    padding: 25px;
+  }
+
+  .pagina-cronograma .titulo-status {
+    flex-wrap: wrap;
+  }
+
+  .pagina-cronograma .tecnologias h1,
+  .pagina-cronograma .linguagens h1 {
+    font-size: 30px;
+  }
+
+  .pagina-cronograma .tecnologias > p,
+  .pagina-cronograma .linguagens > p {
+    font-size: 18px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR
+========================================================= */
+
+@media (max-width: 480px) {
+  /* HEADER */
+
+  header {
+    padding: 15px 6%;
+  }
+
+  .logo h1 {
+    font-size: 23px;
+  }
+
+  .menu-mobile {
+    font-size: 25px;
+  }
+
+  /* HERO */
+
+  .hero h2 {
+    font-size: 34px;
+  }
+
+  /* RESULTADO */
+
+  .resultado-secao {
+    padding: 70px 6%;
+  }
+
+  .resultado .texto h2 {
+    font-size: 30px;
+  }
+
+  .resultado .texto p:not(.subtitulo) {
+    font-size: 16px;
+  }
+
+  /* EQUIPE */
+
+  .equipe-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card-equipe img {
+    height: 200px;
+  }
+
+  /* TECNOLOGIAS */
+
+  .tecnologias h2 {
+    font-size: 25px;
+  }
+
+  /* CRONOGRAMA */
+
+  .pagina-cronograma .intro {
+    padding: 50px 5% 35px;
+  }
+
+  .pagina-cronograma .intro h1 {
+    font-size: 34px;
+  }
+
+  .pagina-cronograma .intro p {
+    font-size: 16px;
+  }
+
+  .pagina-cronograma .cronograma {
+    width: 92%;
+  }
+
+  .pagina-cronograma .cronograma::before {
+    display: none;
+  }
+
+  .pagina-cronograma .etapa {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pagina-cronograma .numero {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+  }
+
+  .pagina-cronograma .card-etapa {
+    width: 100%;
+
+    padding: 22px 18px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .pagina-cronograma .icone {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+
+    font-size: 25px;
+  }
+
+  .pagina-cronograma .titulo-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagina-cronograma .status {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pagina-cronograma .conteudo-etapa h2 {
+    font-size: 20px;
+  }
+
+  .pagina-cronograma .conteudo-etapa p {
+    font-size: 15px;
+  }
+
+  .pagina-cronograma .tecnologias h1,
+  .pagina-cronograma .linguagens h1 {
+    font-size: 27px;
+  }
+
+  .pagina-cronograma .tecnologias > p,
+  .pagina-cronograma .linguagens > p {
+    font-size: 17px;
+  }
+
+  .pagina-cronograma .cards-tecnologias,
+  .pagina-cronograma .cards-linguagens {
+    gap: 12px;
+  }
+
+  .pagina-cronograma .card-tecnologia,
+  .pagina-cronograma .card-linguagem {
+    width: 95px;
+    min-height: 110px;
+  }
+
+  .pagina-cronograma .card-tecnologia i,
+  .pagina-cronograma .card-linguagem i {
+    font-size: 36px;
+  }
+}
