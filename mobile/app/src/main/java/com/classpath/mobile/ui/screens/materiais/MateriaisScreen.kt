@@ -24,7 +24,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -62,74 +64,90 @@ fun MateriaisScreen() {
     )
 
     val uiState by viewModel.uiState.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     val disciplinaSelecionada by viewModel.disciplinaSelecionada.collectAsState()
+    val mensagemErroAtualizacao by viewModel.mensagemErroAtualizacao.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    // Se puxar para atualizar falhar, avisa por Snackbar sem derrubar os dados já exibidos.
+    LaunchedEffect(mensagemErroAtualizacao) {
+        mensagemErroAtualizacao?.let {
+            snackbarHostState.showSnackbar(it)
+            viewModel.mensagemErroAtualizacaoExibida()
+        }
+    }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Materiais") }) },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        when (val state = uiState) {
-            is UiState.Loading -> LoadingState(modifier = Modifier.padding(innerPadding))
-            is UiState.Error -> ErrorState(state.message, modifier = Modifier.padding(innerPadding))
-            is UiState.Success -> {
-                val data = state.data
-                val opcoes = listOf<Disciplina?>(null) + data.disciplinas
-                // "disciplina" no Material é texto livre (sem FK com o Back Acadêmico),
-                // então o filtro compara pelo nome, não por id — e usa comparação
-                // normalizada (ignora acento/caixa/espaços) para não quebrar por
-                // pequenas diferenças de digitação entre os dois back-ends.
-                val nomeSelecionadoNormalizado = disciplinaSelecionada?.nome?.normalizedForMatch()
-                val materiaisFiltrados = if (nomeSelecionadoNormalizado == null) {
-                    data.materiais
-                } else {
-                    data.materiais.filter {
-                        it.disciplina.normalizedForMatch() == nomeSelecionadoNormalizado
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    FilterDropdown(
-                        label = "Disciplina",
-                        options = opcoes,
-                        selected = disciplinaSelecionada,
-                        optionLabel = { it?.nome ?: "Todas as disciplinas" },
-                        onSelected = { viewModel.selecionarDisciplina(it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-
-                    if (materiaisFiltrados.isEmpty()) {
-                        EmptyState("Nenhum material encontrado para esse filtro.")
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                if (uiState is UiState.Error) viewModel.carregar() else viewModel.atualizar()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when (val state = uiState) {
+                is UiState.Loading -> LoadingState(modifier = Modifier.fillMaxSize())
+                is UiState.Error -> ErrorState(state.message, modifier = Modifier.fillMaxSize())
+                is UiState.Success -> {
+                    val data = state.data
+                    val opcoes = listOf<Disciplina?>(null) + data.disciplinas
+                    // "disciplina" no Material é texto livre (sem FK com o Back Acadêmico),
+                    // então o filtro compara pelo nome, não por id — e usa comparação
+                    // normalizada (ignora acento/caixa/espaços) para não quebrar por
+                    // pequenas diferenças de digitação entre os dois back-ends.
+                    val nomeSelecionadoNormalizado = disciplinaSelecionada?.nome?.normalizedForMatch()
+                    val materiaisFiltrados = if (nomeSelecionadoNormalizado == null) {
+                        data.materiais
                     } else {
-                        LazyColumn(
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(materiaisFiltrados) { material ->
-                                MaterialCard(
-                                    material = material,
-                                    onDownloadClick = {
-                                        if (material.url != null) {
-                                            context.startActivity(
-                                                Intent(Intent.ACTION_VIEW, Uri.parse(material.url))
-                                            )
-                                        } else {
-                                            coroutineScope.launch {
-                                                snackbarHostState.showSnackbar(
-                                                    "Este material será baixado assim que o Back Materiais estiver disponível."
+                        data.materiais.filter {
+                            it.disciplina.normalizedForMatch() == nomeSelecionadoNormalizado
+                        }
+                    }
+
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        FilterDropdown(
+                            label = "Disciplina",
+                            options = opcoes,
+                            selected = disciplinaSelecionada,
+                            optionLabel = { it?.nome ?: "Todas as disciplinas" },
+                            onSelected = { viewModel.selecionarDisciplina(it) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+
+                        if (materiaisFiltrados.isEmpty()) {
+                            EmptyState("Nenhum material encontrado para esse filtro.")
+                        } else {
+                            LazyColumn(
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                items(materiaisFiltrados) { material ->
+                                    MaterialCard(
+                                        material = material,
+                                        onDownloadClick = {
+                                            if (material.url != null) {
+                                                context.startActivity(
+                                                    Intent(Intent.ACTION_VIEW, Uri.parse(material.url))
                                                 )
+                                            } else {
+                                                coroutineScope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        "Este material será baixado assim que o Back Materiais estiver disponível."
+                                                    )
+                                                }
                                             }
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             }
                         }
                     }

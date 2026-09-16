@@ -14,11 +14,16 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,63 +49,82 @@ fun HorariosScreen() {
     )
 
     val uiState by viewModel.uiState.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     val disciplinaSelecionada by viewModel.disciplinaSelecionada.collectAsState()
+    val mensagemErroAtualizacao by viewModel.mensagemErroAtualizacao.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Se puxar para atualizar falhar, avisa por Snackbar sem derrubar os dados já exibidos.
+    LaunchedEffect(mensagemErroAtualizacao) {
+        mensagemErroAtualizacao?.let {
+            snackbarHostState.showSnackbar(it)
+            viewModel.mensagemErroAtualizacaoExibida()
+        }
+    }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Grade de Horários") }) }
+        topBar = { TopAppBar(title = { Text("Grade de Horários") }) },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        when (val state = uiState) {
-            is UiState.Loading -> LoadingState(modifier = Modifier.padding(innerPadding))
-            is UiState.Error -> ErrorState(state.message, modifier = Modifier.padding(innerPadding))
-            is UiState.Success -> {
-                val data = state.data
-                val opcoes = listOf<Disciplina?>(null) + data.disciplinas
-                val horariosFiltrados = if (disciplinaSelecionada == null) {
-                    data.horarios
-                } else {
-                    data.horarios.filter { it.disciplinaId == disciplinaSelecionada?.id }
-                }
-                val agrupados = DiaSemana.ORDEM.mapNotNull { dia ->
-                    val doDia = horariosFiltrados.filter { it.diaSemana == dia }.sortedBy { it.horarioInicio }
-                    if (doDia.isEmpty()) null else dia to doDia
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    FilterDropdown(
-                        label = "Disciplina",
-                        options = opcoes,
-                        selected = disciplinaSelecionada,
-                        optionLabel = { it?.nome ?: "Todas as disciplinas" },
-                        onSelected = { viewModel.selecionarDisciplina(it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-
-                    if (agrupados.isEmpty()) {
-                        EmptyState("Nenhum horário encontrado para esse filtro.")
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                if (uiState is UiState.Error) viewModel.carregar() else viewModel.atualizar()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when (val state = uiState) {
+                is UiState.Loading -> LoadingState(modifier = Modifier.fillMaxSize())
+                is UiState.Error -> ErrorState(state.message, modifier = Modifier.fillMaxSize())
+                is UiState.Success -> {
+                    val data = state.data
+                    val opcoes = listOf<Disciplina?>(null) + data.disciplinas
+                    val horariosFiltrados = if (disciplinaSelecionada == null) {
+                        data.horarios
                     } else {
-                        LazyColumn(
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            agrupados.forEach { (dia, horariosDoDia) ->
-                                item {
-                                    Text(
-                                        text = dia,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                                    )
-                                }
-                                items(horariosDoDia) { horario ->
-                                    HorarioCard(
-                                        horario = horario,
-                                        disciplina = data.disciplinas.find { it.id == horario.disciplinaId }
-                                    )
+                        data.horarios.filter { it.disciplinaId == disciplinaSelecionada?.id }
+                    }
+                    val agrupados = DiaSemana.ORDEM.mapNotNull { dia ->
+                        val doDia = horariosFiltrados.filter { it.diaSemana == dia }
+                            .sortedBy { it.horarioInicio }
+                        if (doDia.isEmpty()) null else dia to doDia
+                    }
+
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        FilterDropdown(
+                            label = "Disciplina",
+                            options = opcoes,
+                            selected = disciplinaSelecionada,
+                            optionLabel = { it?.nome ?: "Todas as disciplinas" },
+                            onSelected = { viewModel.selecionarDisciplina(it) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+
+                        if (agrupados.isEmpty()) {
+                            EmptyState("Nenhum horário encontrado para esse filtro.")
+                        } else {
+                            LazyColumn(
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                agrupados.forEach { (dia, horariosDoDia) ->
+                                    item {
+                                        Text(
+                                            text = dia,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                                        )
+                                    }
+                                    items(horariosDoDia) { horario ->
+                                        HorarioCard(
+                                            horario = horario,
+                                            disciplina = data.disciplinas.find { it.id == horario.disciplinaId }
+                                        )
+                                    }
                                 }
                             }
                         }
