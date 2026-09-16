@@ -1,177 +1,144 @@
 ﻿<!doctype html>
-
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipe - ClassPath</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../CSS/style.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
 
-    <title>Equipe - ClassPath</title>
+<body>
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="logo">
+    <h1>ClassPath</h1>
+  </div>
 
-    <link rel="stylesheet" href="../CSS/style.css" />
-  </head>
+  <!-- BOTÃO MENU MOBILE -->
+  <button class="menu-mobile" aria-label="Abrir menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
-  <body>
-    <!-- ================= HEADER ================= -->
+  <nav>
+    <a href="../../index.html">Home</a>
+    <a href="equipe.html">Equipe</a>
+    <a href="cronograma.html">Cronograma</a>
+  </nav>
+</header>
 
-    <header>
-      <div class="logo">
-        <h1>ClassPath</h1>
-      </div>
+<!-- ================= APRESENTAÇÃO DA EQUIPE ================= -->
+<section id="inicio" class="hero hero-equipe">
+  <div class="hero-texto">
+    <h2>NOSSA EQUIPE</h2>
 
-      <nav>
-        <a href="../../index.html">Home</a>
+    <p class="subtitulo">Conheça quem está por trás do ClassPath</p>
 
-        <a href="equipe.html">Equipe</a>
+    <p>
+      Somos uma equipe dedicada a criar soluções que tornam a rotina
+      acadêmica mais organizada, prática e acessível para todos!
+    </p>
+  </div>
+</section>
 
-        <a href="cronograma.html">Cronograma</a>
-      </nav>
-    </header>
+<!-- ================= CARDS DA EQUIPE ================= -->
+<section class="equipe">
+  <div class="equipe-container">
+    <!-- CARD 1 -->
+    <div class="card-equipe">
+      <img src="" alt="Fabrício" />
+      <strong>FABRÍCIO</strong>
+      <span>Front-end Developer</span>
+      <p>HTML • CSS • JavaScript</p>
+    </div>
 
-    <!-- ================= APRESENTAÇÃO DA EQUIPE ================= -->
+    <!-- CARD 2 -->
+    <div class="card-equipe">
+      <img src="../images/victor.jpg" alt="Membro da equipe" />
+      <strong>Victor Manoel</strong>
+      <span>Back-end Developer</span>
+      <p>Java • Spring • PostgreSQL</p>
+    </div>
 
-    <section id="inicio" class="hero hero-equipe">
-      <div class="hero-texto">
-        <h2>NOSSA EQUIPE</h2>
+    <!-- CARD 3 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologia</p>
+    </div>
 
-        <p class="subtitulo">Conheça quem está por trás do ClassPath</p>
+    <!-- CARD 4 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologia</p>
+    </div>
 
-        <p>
-          Somos uma equipe dedicada a criar soluções que tornam a rotina
-          acadêmica mais organizada, prática e acessível para todos!
-        </p>
-      </div>
-    </section>
+    <!-- CARD 5 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologia</p>
+    </div>
 
-    <!-- ================= CARDS DA EQUIPE ================= -->
+    <!-- CARD 6 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologias</p>
+    </div>
 
-    <section class="equipe">
-      <div class="equipe-container">
-        <!-- CARD 1 -->
+    <!-- CARD 7 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologias</p>
+    </div>
 
-        <div class="card-equipe">
-          <img src="" alt="Fabrício" />
+    <!-- CARD 8 -->
+    <div class="card-equipe">
+      <img src="" alt="Membro da equipe" />
+      <strong>nome</strong>
+      <span>area</span>
+      <p>tecnologias</p>
+    </div>
+  </div>
+</section>
 
-          <strong>FABRÍCIO</strong>
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="rodape">
+    <div>
+      <h3>ClassPath</h3>
+      <p>Informação acadêmica organizada em um só lugar.</p>
+    </div>
 
-          <span>Front-end Developer</span>
+    <div>
+      <h3>Contato</h3>
+      <p>classpath@email.com</p>
+    </div>
 
-          <p>HTML • CSS • JavaScript</p>
-        </div>
+    <div>
+      <h3>Links</h3>
+      <a href="../../index.html">Home</a>
+    </div>
+  </div>
+</footer>
 
-        <!-- CARD 2 -->
+<script>
+  const btnMobile = document.querySelector('.menu-mobile');
+  const nav = document.querySelector('nav');
 
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologias</p>
-        </div>
-
-        <!-- CARD 3 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologia</p>
-        </div>
-
-        <!-- CARD 4 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologia</p>
-        </div>
-
-        <!-- CARD 5 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologia</p>
-        </div>
-
-        <!-- CARD 6 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologias</p>
-        </div>
-
-        <!-- CARD 7 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologias</p>
-        </div>
-
-        <!-- CARD 8 -->
-
-        <div class="card-equipe">
-          <img src="" alt="Membro da equipe" />
-
-          <strong>nome</strong>
-
-          <span>area</span>
-
-          <p>tecnologias</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= TECNOLOGIAS ================= -->
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-      <div class="rodape">
-        <div>
-          <h3>ClassPath</h3>
-
-          <p>Informação acadêmica organizada em um só lugar.</p>
-        </div>
-
-        <div>
-          <h3>Contato</h3>
-
-          <p>classpath@email.com</p>
-        </div>
-
-        <div>
-          <h3>Links</h3>
-
-          <a href="../../index.html">Início</a>
-
-          <a href="#tecnologia">Tecnologia</a>
-        </div>
-      </div>
-    </footer>
-  </body>
+  btnMobile.addEventListener('click', () => {
+    nav.classList.toggle('ativo');
+  });
+</script>
+</body>
 </html>
-```
