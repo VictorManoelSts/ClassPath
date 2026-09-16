@@ -94,7 +94,7 @@
 
           <span class="data">
                 <i class="fa-regular fa-calendar"></i>
-                Em andamento
+                Concluído
               </span>
         </div>
       </div>
@@ -127,7 +127,7 @@
 
           <span class="data">
                 <i class="fa-regular fa-calendar"></i>
-                Em andamento
+                Concluído
               </span>
         </div>
       </div>
@@ -160,7 +160,7 @@
 
           <span class="data">
                 <i class="fa-regular fa-calendar"></i>
-                Em andamento
+                Concluído
               </span>
         </div>
       </div>
@@ -452,5 +452,14 @@
     </div>
   </div>
 </footer>
+
+<script>
+  const btnMobile = document.querySelector('.menu-mobile');
+  const nav = document.querySelector('nav');
+
+  btnMobile.addEventListener('click', () => {
+    nav.classList.toggle('ativo');
+  });
+</script>
 </body>
 </html>

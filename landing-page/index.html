@@ -7,6 +7,8 @@
     <title>ClassPath</title>
 
     <link rel="stylesheet" href="assets/CSS/style.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   </head>
 
   <body>
@@ -16,12 +18,18 @@
         <h1>ClassPath</h1>
       </div>
 
+      <!-- BOTÃO MENU MOBILE -->
+      <button class="menu-mobile" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
       <nav>
         <a href="index.html">Home</a>
         <a href="assets/Pages/equipe.html">Equipe</a>
         <a href="assets/Pages/cronograma.html">Cronograma</a>
       </nav>
     </header>
+
     <!--  INÍCIO  -->
 
     <section id="inicio" class="hero">
@@ -120,7 +128,7 @@
         <div class="conteudo reverso">
           <div class="imagem">
             <img
-              src="../imagens/imagem3.png"
+              src="assets/images/imagem2.png"
               alt="Estudante utilizando uma plataforma acadêmica"
             />
           </div>
@@ -234,5 +242,14 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      const btnMobile = document.querySelector('.menu-mobile');
+      const nav = document.querySelector('nav');
+
+      btnMobile.addEventListener('click', () => {
+        nav.classList.toggle('ativo');
+      });
+    </script>
   </body>
 </html>
