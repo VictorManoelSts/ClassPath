@@ -53,7 +53,7 @@ fun ClassPathNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Horarios.route,
+            startDestination = Screen.Avisos.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Horarios.route) { HorariosScreen() }
