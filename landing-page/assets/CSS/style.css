@@ -216,9 +216,10 @@ nav a:hover {
 
 .imagem img {
   width: 100%;
-  max-width: 100%;
+  max-width: 350px;
   height: auto;
   display: block;
+  margin: 0 auto;
   border-radius: 15px;
 }
 
@@ -356,6 +357,7 @@ nav a:hover {
   max-width: 450px;
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
 /* =========================================================
@@ -1183,6 +1185,14 @@ footer {
     flex-direction: column;
   }
 
+  /* IMAGEM RESPONSIVA NO MOBILE */
+  .conteudo .imagem img,
+  .resultado .imagem img {
+    width: 100% !important;
+    max-width: 280px !important; /* Deixa menor e com bom espaçamento lateral */
+    margin: 0 auto !important;
+  }
+
   /* PROBLEMAS */
 
   .fontes {
@@ -1219,10 +1229,6 @@ footer {
 
   .resultado .imagem {
     width: 100%;
-  }
-
-  .resultado .imagem img {
-    max-width: 400px;
   }
 
   /* EQUIPE */
@@ -1323,6 +1329,12 @@ footer {
 
   .resultado .texto p:not(.subtitulo) {
     font-size: 16px;
+  }
+
+  /* AJUSTE EXTRA PARA TELAS BEM PEQUENAS */
+  .conteudo .imagem img,
+  .resultado .imagem img {
+    max-width: 250px !important;
   }
 
   /* EQUIPE */

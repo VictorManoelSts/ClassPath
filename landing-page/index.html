@@ -8,7 +8,10 @@
 
     <link rel="stylesheet" href="assets/CSS/style.css" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
   </head>
 
   <body>
@@ -23,7 +26,7 @@
         <i class="fa-solid fa-bars"></i>
       </button>
 
-      <nav>
+      <nav class="navegacao">
         <a href="index.html">Home</a>
         <a href="assets/Pages/equipe.html">Equipe</a>
         <a href="assets/Pages/cronograma.html">Cronograma</a>
@@ -77,13 +80,6 @@
               encontrar determinado conteúdo.
             </p>
           </div>
-
-          <div class="imagem">
-            <img
-              src="assets/images/imagem2.png"
-              alt="imagem ilustrativa do site"
-            />
-          </div>
         </div>
       </div>
     </section>
@@ -128,8 +124,10 @@
         <div class="conteudo reverso">
           <div class="imagem">
             <img
-              src="assets/images/imagem2.png"
-              alt="Estudante utilizando uma plataforma acadêmica"
+              src="../landing-page/assets/images/imagem1.jpg"
+              alt=""
+              width="50"
+              height="30"
             />
           </div>
 
@@ -211,7 +209,7 @@
         </div>
 
         <div class="imagem">
-          <img src="assets/images/" alt="Imagem ilustrativa" />
+          <img src="../landing-page/assets/images/imagem2.jpg" alt="" />
         </div>
       </div>
     </section>
@@ -244,11 +242,11 @@
     </footer>
 
     <script>
-      const btnMobile = document.querySelector('.menu-mobile');
-      const nav = document.querySelector('nav');
+      const btnMobile = document.querySelector(".menu-mobile");
+      const navegacao = document.querySelector(".navegacao");
 
-      btnMobile.addEventListener('click', () => {
-        nav.classList.toggle('ativo');
+      btnMobile.addEventListener("click", () => {
+        navegacao.classList.toggle("ativo");
       });
     </script>
   </body>
