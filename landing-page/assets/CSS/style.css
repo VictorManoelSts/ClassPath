@@ -1182,7 +1182,7 @@ footer {
   }
 
   .reverso {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   /* IMAGEM RESPONSIVA NO MOBILE */
