@@ -17,6 +17,6 @@ import com.classpath.mobile.BuildConfig
 object AppConfig {
 
     const val USE_MOCK_DATA = BuildConfig.USE_MOCK
-    const val BASE_URL_ACADEMICO = BuildConfig.URL_ACADEMICO
-    const val BASE_URL_MATERIAIS = BuildConfig.URL_MATERIAIS
+    val BASE_URL_ACADEMICO = BuildConfig.URL_ACADEMICO
+    val BASE_URL_MATERIAIS = BuildConfig.URL_MATERIAIS
 }

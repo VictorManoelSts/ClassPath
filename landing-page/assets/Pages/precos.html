@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos e Preços - ClassPath</title>
+
+    <!-- Link puxando o CSS da sua pasta assets/CSS -->
+    <link rel="stylesheet" href="../CSS/style.css">
+    <!-- Font Awesome -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+</head>
+<body class="pagina-precos">
+
+<!-- ================= HEADER ================= -->
+<header>
+    <div class="logo">
+        <h1>ClassPath</h1>
+    </div>
+
+    <!-- BOTÃO MENU MOBILE -->
+    <button class="menu-mobile" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <nav class="navegacao">
+        <a href="../../index.html">Home</a>
+        <a href="precos.html">Planos</a>
+        <a href="equipe.html">Equipe</a>
+        <a href="cronograma.html">Cronograma</a>
+        <a href="documentação.html">documentação</a>
+    </nav>
+</header>
+
+<main class="precos-main">
+
+    <div class="pricing-header">
+        <h1>Escolha o plano ideal para a sua instituição</h1>
+        <p>Escale a gestão acadêmica com a arquitetura robusta do ClassPath. Desde pequenas escolas a grandes polos universitários.</p>
+    </div>
+
+    <div class="pricing-container">
+
+        <!-- Plano Starter -->
+        <div class="pricing-card">
+            <div class="plan-name">Starter</div>
+            <div class="plan-price">R$ 299<span>/mês</span></div>
+            <p class="plan-description">Ideal para escolas de pequena dimensão que procuram digitalizar a sua gestão.</p>
+            <ul class="features-list">
+                <li>Até 250 alunos registrados</li>
+                <li>Portal Web Administrativo (Gestão)</li>
+                <li>Portal Web do Aluno (React)</li>
+                <li>Gestão de Avisos e Horários</li>
+                <li>Armazenamento Base (5GB)</li>
+                <li class="disabled">Aplicativo Mobile Nativo (Android)</li>
+                <li class="disabled">Suporte Dedicado 24/7</li>
+            </ul>
+            <a href="#" class="btn btn-outline">Começar Gratuitamente</a>
+        </div>
+
+        <!-- Plano Pro (Destaque) -->
+        <div class="pricing-card popular">
+            <div class="badge">MAIS ESCOLHIDO</div>
+            <div class="plan-name">Professional</div>
+            <div class="plan-price">R$ 799<span>/mês</span></div>
+            <p class="plan-description">A experiência completa do ecossistema ClassPath para instituições em crescimento.</p>
+            <ul class="features-list">
+                <li>Até 1.500 alunos registrados</li>
+                <li>Portal Web Administrativo e Aluno</li>
+                <li><strong>Aplicativo Mobile Nativo (Android)</strong></li>
+                <li>Gestão Avançada de Materiais</li>
+                <li>Armazenamento na Nuvem (100GB)</li>
+                <li>Suporte por Email e Chat</li>
+                <li class="disabled">Integração com Sistemas Externos</li>
+            </ul>
+            <a href="#" class="btn btn-solid">Subscrever Pro</a>
+        </div>
+
+        <!-- Plano Enterprise -->
+        <div class="pricing-card">
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-price">Sob Consulta</div>
+            <p class="plan-description">Infraestrutura dedicada e microsserviços isolados para grandes universidades.</p>
+            <ul class="features-list">
+                <li>Alunos Ilimitados</li>
+                <li>Acesso a todas as plataformas (Web + App)</li>
+                <li>Armazenamento de Arquivos Ilimitado</li>
+                <li>Cluster Dedicado (Spring Boot + FastAPI)</li>
+                <li>Integração com ERPs Acadêmicos</li>
+                <li>Suporte Dedicado 24/7</li>
+            </ul>
+            <a href="#" class="btn btn-outline">Contatar Vendas</a>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+    <div class="rodape">
+        <div>
+            <h3>ClassPath</h3>
+            <p>Informação acadêmica organizada em um só lugar.</p>
+        </div>
+
+        <div>
+            <h3>Contato</h3>
+            <p>classpath@email.com</p>
+        </div>
+
+        <div>
+            <h3>Links</h3>
+            <a href="../../index.html">Home</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const btnMobile = document.querySelector(".menu-mobile");
+    const navegacao = document.querySelector(".navegacao");
+
+    btnMobile.addEventListener("click", () => {
+        navegacao.classList.toggle("ativo");
+    });
+</script>
+</body>
+</html>
