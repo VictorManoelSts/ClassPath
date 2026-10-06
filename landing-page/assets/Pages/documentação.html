@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentação e Arquitetura - Portal da Turma</title>
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- ================= HEADER ================= -->
+    <header>
+      <div class="logo">
+        <h1>ClassPath</h1>
+      </div>
+
+      <!-- BOTÃO MENU MOBILE -->
+      <button class="menu-mobile" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="navegacao">
+        <a href="../../index.html">Home</a>
+        <a href="equipe.html">Equipe</a>
+        <a href="cronograma.html">Cronograma</a>
+        <a href="documentação.html">documentação</a>
+      </nav>
+    </header>
+
+    <!-- ================= CONTEÚDO DA DOCUMENTAÇÃO ================= -->
+    <main class="pagina-documentacao">
+      <div class="intro-doc">
+        <h1>Documentação Completa do Sistema</h1>
+        <span class="subtitulo">ESPECIFICAÇÕES TÉCNICAS E ARQUITETURA</span>
+        <p>
+          Protótipo funcional da plataforma acadêmica desenvolvido para a turma
+          da faculdade, unificando avisos, horários, disciplinas, professores e
+          materiais didáticos com entrega prevista para 16 de setembro.
+        </p>
+      </div>
+
+      <div class="doc-container">
+        <!-- Card 1: Visão Geral -->
+        <div class="doc-card">
+          <h2>Visão Geral do Projeto</h2>
+          <p>
+            O Portal da Turma é uma solução centralizada criada para otimizar a
+            comunicação e o acesso a conteúdos acadêmicos. O sistema resolve
+            problemas de dispersão de avisos e documentos, permitindo que os
+            estudantes consultem grades horárias e materiais em PDF de forma
+            organizada e com filtros por disciplina.
+          </p>
+        </div>
+
+        <!-- Card 2: Micro Front-end do Aluno -->
+        <div class="doc-card">
+          <h2>Micro Front-end do Aluno</h2>
+          <div class="tech-tag">React + TypeScript</div>
+          <p>
+            Interface web moderna e responsiva voltada para os estudantes.
+            Permite a consulta rápida de avisos recentes, visualização da grade
+            horária completa das disciplinas, verificação de dados dos
+            professores e descarregamento direto dos materiais didáticos
+            disponibilizados.
+          </p>
+        </div>
+
+        <!-- Card 3: Micro Front-end Administrativo -->
+        <div class="doc-card">
+          <h2>Micro Front-end Administrativo</h2>
+          <div class="tech-tag">Vue + JavaScript</div>
+          <p>
+            Painel web independente dedicado à gestão de conteúdos. É através
+            desta aplicação que os administradores conseguem cadastrar novos
+            avisos acadêmicos, atualizar grades e enviar os ficheiros PDF das
+            aulas para o sistema.
+          </p>
+        </div>
+
+        <!-- Card 4: Aplicativo Mobile -->
+        <div class="doc-card">
+          <h2>Aplicativo Mobile Android</h2>
+          <div class="tech-tag">Kotlin</div>
+          <p>
+            Aplicação nativa desenvolvida para dispositivos móveis. Atua como o
+            terceiro cliente do ecossistema, consumindo diretamente as APIs dos
+            back-ends para garantir que os alunos tenham acesso a todas as
+            informações na palma da mão.
+          </p>
+        </div>
+
+        <!-- Card 5: Back-end Acadêmico -->
+        <div class="doc-card">
+          <h2>Back-end Acadêmico (API REST)</h2>
+          <div class="tech-tag">Java + Spring Boot</div>
+          <p>
+            Servidor principal responsável por gerir a lógica de negócios e
+            todos os dados estruturados do sistema. Processa as requisições
+            relacionadas a disciplinas, horários, professores e avisos
+            acadêmicos com total segurança e alta performance.
+          </p>
+        </div>
+
+        <!-- Card 6: Back-end de Materiais -->
+        <div class="doc-card">
+          <h2>Back-end de Materiais (API REST)</h2>
+          <div class="tech-tag">Python + FastAPI</div>
+          <p>
+            Servidor especializado e assíncrono focado estritamente no
+            tratamento de ficheiros. Lida com o recebimento de uploads,
+            listagem, pesquisa e a disponibilização otimizada dos slides e
+            materiais de aula em PDF.
+          </p>
+        </div>
+
+        <!-- Card 7: Bases de Dados -->
+        <div class="doc-card">
+          <h2>Camada de Armazenamento e Bases de Dados</h2>
+          <div class="tech-tag">PostgreSQL e MongoDB / GridFS</div>
+          <p>
+            A arquitetura de dados separa rigorosamente as responsabilidades: o
+            <strong>PostgreSQL</strong> armazena com integridade relacional
+            todos os dados estruturados do sistema pelo back-end Java. Em
+            paralelo, o <strong>MongoDB (com GridFS)</strong> é utilizado pelo
+            back-end Python para gerir de forma altamente eficiente o
+            armazenamento binário de grandes ficheiros e PDFs.
+          </p>
+        </div>
+
+        <!-- Card 8: Repositório GitHub -->
+        <div class="doc-card repo-card">
+          <h2>Repositório Oficial do Código-Fonte</h2>
+          <p>
+            Para consultar a estrutura de pastas, o código-fonte completo
+            implementado, o histórico de commits e os guias de configuração do
+            ambiente, aceda ao repositório oficial no GitHub:
+          </p>
+          <a
+            href=https://github.com/VictorManoelSts/ClassPath
+            target="_blank"
+            class="botao-github"
+          >
+            <i class="fa-brands fa-github"></i> Aceder ao Repositório no GitHub
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+      <div class="rodape">
+        <div>
+          <h3>ClassPath</h3>
+          <p>Informação acadêmica organizada em um só lugar.</p>
+        </div>
+
+        <div>
+          <h3>Contato</h3>
+          <p>classpath@email.com</p>
+        </div>
+
+        <div>
+          <h3>Links</h3>
+          <a href="../../index.html">Início</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const btnMobile = document.querySelector(".menu-mobile");
+      const navegacao = document.querySelector(".navegacao");
+
+      btnMobile.addEventListener("click", () => {
+        navegacao.classList.toggle("ativo");
+      });
+    </script>
+  </body>
+</html>
