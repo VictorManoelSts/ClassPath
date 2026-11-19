@@ -82,10 +82,16 @@ public class HorarioService {
     }
 
     private void validarConflitoDeHorario(HorarioRequestDTO dto, Long idIgnorar) {
+        String sala = normalizarSala(dto.getSala());
+        if (sala == null) {
+            return;
+        }
+
         List<Horario> horariosNoMesmoDia = horarioRepository.findByDiaSemana(dto.getDiaSemana().trim());
 
         boolean existeConflito = horariosNoMesmoDia.stream()
-                .filter(h -> idIgnorar == null || !h.getId().equals(idIgnorar))
+                .filter(h -> idIgnorar == null || !idIgnorar.equals(h.getId()))
+                .filter(h -> sala.equalsIgnoreCase(normalizarSala(h.getSala())))
                 .anyMatch(h -> horariosSeSobrepõem(h, dto));
 
         if (existeConflito) {
