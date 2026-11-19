@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ClassPath | Entrar</title>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="cabecalho">
+    <div><span class="marca">ClassPath</span><h1>Painel administrativo</h1></div>
+</header>
+<main class="conteudo">
+    <section class="painel painel-login">
+        <h2>Entrar</h2>
+        {% if erro %}<p role="alert">{{ erro }}</p>{% endif %}
+        <form method="post" action="{{ url_for('login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="username">Usuário</label>
+            <input id="username" name="username" autocomplete="username" required>
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" maxlength="256" required>
+            <div class="acoes-formulario">
+                <button class="botao primario" type="submit">Entrar</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

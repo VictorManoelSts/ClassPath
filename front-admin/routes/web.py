@@ -1,5 +1,7 @@
-﻿
-from flask import Blueprint, render_template, request, jsonify, Response
+
+from flask import Blueprint, render_template, request, jsonify, Response, current_app
+from requests import HTTPError, ConnectionError as UpstreamConnectionError, Timeout
+from werkzeug.exceptions import HTTPException
 from services.spring_api import (
     listar_disciplinas, criar_disciplina, atualizar_disciplina, deletar_disciplina,
     listar_horarios, criar_horario, atualizar_horario, deletar_horario,
@@ -9,6 +11,16 @@ from services.fastapi_api import upload_material, listar_materiais, baixar_mater
 import services.fastapi_api as fastapi_api
 
 web_bp = Blueprint('web', __name__)
+
+
+def upstream_error(error):
+    if isinstance(error, HTTPException):
+        return jsonify(erro=error.description), error.code
+    if isinstance(error, HTTPError) and error.response is not None:
+        status = error.response.status_code
+        if status in (401, 403):
+            return jsonify(erro="Acesso recusado pelo serviço."), status
+    return jsonify(erro="Falha ao processar a operação."), 500
 
 # --- ROTA DA INTERFACE ---
 @web_bp.route('/')
@@ -25,7 +37,7 @@ def get_disciplinas():
         dados = listar_disciplinas()
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/disciplinas', methods=['POST'])
 def post_disciplina():
@@ -34,7 +46,7 @@ def post_disciplina():
         dados = criar_disciplina(payload)
         return jsonify(dados), 201
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/disciplinas/<int:id>', methods=['PUT'])
 def put_disciplina(id):
@@ -43,7 +55,7 @@ def put_disciplina(id):
         dados = atualizar_disciplina(id, payload)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/disciplinas/<int:id>', methods=['DELETE'])
 def delete_disciplina(id):
@@ -51,7 +63,7 @@ def delete_disciplina(id):
         dados = deletar_disciplina(id)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 # Horários
 @web_bp.route('/api/horarios', methods=['GET'])
@@ -60,7 +72,7 @@ def get_horarios():
         dados = listar_horarios()
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/horarios', methods=['POST'])
 def post_horario():
@@ -69,7 +81,7 @@ def post_horario():
         dados = criar_horario(payload)
         return jsonify(dados), 201
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/horarios/<int:id>', methods=['PUT'])
 def put_horario(id):
@@ -78,7 +90,7 @@ def put_horario(id):
         dados = atualizar_horario(id, payload)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/horarios/<int:id>', methods=['DELETE'])
 def delete_horario(id):
@@ -86,7 +98,7 @@ def delete_horario(id):
         dados = deletar_horario(id)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 # Avisos
 @web_bp.route('/api/avisos', methods=['GET'])
@@ -95,7 +107,7 @@ def get_avisos():
         dados = listar_avisos()
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/avisos', methods=['POST'])
 def post_aviso():
@@ -104,7 +116,7 @@ def post_aviso():
         dados = criar_aviso(payload)
         return jsonify(dados), 201
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/avisos/<int:id>', methods=['PUT'])
 def put_aviso(id):
@@ -113,7 +125,7 @@ def put_aviso(id):
         dados = atualizar_aviso(id, payload)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 @web_bp.route('/api/avisos/<int:id>', methods=['DELETE'])
 def delete_aviso(id):
@@ -121,9 +133,29 @@ def delete_aviso(id):
         dados = deletar_aviso(id)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return upstream_error(e)
 
 # Materiais (FastAPI / MongoDB)
+def materials_error(error):
+    if isinstance(error, HTTPError) and error.response is not None:
+        status = error.response.status_code
+        messages = {
+            400: "Dados de material inválidos.",
+            404: "Material não encontrado.",
+            413: "Upload excede o limite.",
+            422: "Dados de material inválidos.",
+            500: "Falha interna no serviço de materiais.",
+            503: "Armazenamento indisponível.",
+        }
+        if status in messages:
+            return jsonify(erro=messages[status]), status
+    if isinstance(error, Timeout):
+        return jsonify(erro="O serviço de materiais excedeu o tempo de resposta."), 504
+    if isinstance(error, UpstreamConnectionError):
+        return jsonify(erro="Serviço de materiais indisponível."), 503
+    return upstream_error(error)
+
+
 @web_bp.route('/api/materiais', methods=['GET'])
 def get_materiais():
     try:
@@ -132,11 +164,12 @@ def get_materiais():
         dados = listar_materiais(disciplina_id)
         return jsonify(dados), 200
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return materials_error(e)
 
 @web_bp.route('/api/materiais', methods=['POST'])
 def post_material():
     try:
+        request.max_content_length = current_app.config["MATERIALS_MAX_UPLOAD_BYTES"] + 64 * 1024
         if 'file' not in request.files:
             return jsonify({"erro": "Nenhum arquivo enviado na requisição."}), 400
 
@@ -149,7 +182,7 @@ def post_material():
         dados = upload_material(disciplina_id, file_obj)
         return jsonify(dados), 201
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return materials_error(e)
 
 
 @web_bp.route('/api/materiais/<file_id>', methods=['GET'])
@@ -170,9 +203,11 @@ def get_download_material(file_id):
                                                             f'attachment; filename="{file_id}.pdf"')
         }
 
-        return Response(gerar_chunks(), headers=headers)
+        resposta = Response(gerar_chunks(), headers=headers)
+        resposta.call_on_close(resp_fastapi.close)
+        return resposta
     except Exception as e:
-        return jsonify({"erro": str(e)}), 500
+        return materials_error(e)
 
 @web_bp.route('/materiais/<file_id>', methods=['DELETE'])
 def route_deletar_material(file_id):
@@ -180,7 +215,7 @@ def route_deletar_material(file_id):
         fastapi_api.deletar_material(file_id)
         return jsonify({"mensagem": "Material deletado com sucesso!"}), 200
     except Exception as e:
-        return jsonify({"erro": f"Falha ao deletar: {str(e)}"}), 500
+        return materials_error(e)
 
 
 @web_bp.route('/materiais/<file_id>', methods=['GET'])
@@ -197,11 +232,13 @@ def route_baixar_material(file_id):
         )
 
         # Repassa o streaming para o front-end em blocos de 8KB
-        return Response(
+        resposta = Response(
             fastapi_response.iter_content(chunk_size=8192),
             content_type=content_type,
             headers={'Content-Disposition': content_disposition}
         )
+        resposta.call_on_close(fastapi_response.close)
+        return resposta
 
     except Exception as e:
-        return {"erro": f"Falha ao baixar o arquivo: {str(e)}"}, 500
+        return materials_error(e)

@@ -84,8 +84,9 @@ async function requisicao(caminho, opcoesFetch = {}) {
         cabecalhos["Content-Type"] = "application/json";
     }
 
-    // O envio do Token de Autorização foi removido do JS.
-    // Se o Spring Boot exigir token futuramente, será o Flask quem o enviará.
+    if (!["GET", "HEAD", "OPTIONS"].includes(metodo.toUpperCase())) {
+        cabecalhos["X-CSRF-Token"] = document.querySelector('meta[name="csrf-token"]').content;
+    }
 
     const controller = new AbortController();
     const expirou = setTimeout(() => controller.abort(), TEMPO_LIMITE);
@@ -808,7 +809,10 @@ async function carregarMateriais() {
             listaMateriais.append(artigo);
         });
     } catch (erro) {
-        listaMateriais.innerHTML = `<p class="vazio" style="color: var(--danger)">Erro ao carregar: ${erro.message}</p>`;
+        const mensagem = document.createElement("p");
+        mensagem.className = "vazio";
+        mensagem.textContent = `Erro ao carregar: ${erro.message}`;
+        listaMateriais.replaceChildren(mensagem);
     }
 }
 
@@ -817,7 +821,8 @@ async function deletarMaterial(fileId) {
 
     try {
         const response = await fetch(`/materiais/${fileId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content }
         });
 
         if (response.ok) {

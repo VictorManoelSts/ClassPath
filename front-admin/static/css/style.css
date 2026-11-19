@@ -297,6 +297,8 @@ code {
 /* ---------- Formulários ---------- */
 
 form { display: grid; gap: 4px; margin-top: 16px; }
+.acoes-cabecalho > form { margin: 0; }
+.painel-login { width: min(100%, 440px); margin-inline: auto; }
 
 label {
   color: var(--text-2);

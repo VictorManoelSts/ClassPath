@@ -31,7 +31,7 @@ O ecossistema possui duas formas principais de execução: via Docker para os se
 
 ### 1. Serviços Web e APIs (Docker)
 
-Com o Docker em execução, copie o `.env.example` da raiz para `.env` e ajuste as credenciais locais. Na raiz, execute
+Com o Docker em execução, copie o `.env.example` da raiz para `.env` e gere as credenciais conforme o [guia de segurança](docs/seguranca.md). Na raiz, execute
 
 ```bash
 docker compose up -d --build --wait
@@ -42,7 +42,7 @@ docker compose up -d --build --wait
 | Front Aluno | http://localhost:5173 |
 | Front Admin | http://localhost:5000 |
 | Landing page | http://localhost:8081 |
-| API Acadêmica (Swagger) | http://localhost:8080/swagger-ui/index.html |
+| API Acadêmica (leitura pública) | http://localhost:8080/api/disciplinas |
 | API de Materiais (Swagger) | http://localhost:8000/docs |
 
 As portas são publicadas em `127.0.0.1`. Os contêineres se comunicam pelos nomes dos serviços do Compose. PostgreSQL e MongoDB usam volumes persistentes. Use `docker compose down` para parar a pilha preservando os dados.

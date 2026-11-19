@@ -45,31 +45,13 @@ A aplicação foi preparada para rodar via Docker, isolando o banco de dados e a
 ### Requisitos
 - Docker e Docker Compose instalados.
 
-### 1. Configurar Variáveis de Ambiente
-Crie um arquivo `.env` na raiz do projeto contendo as variáveis de acesso:
+### Configuração local
 
-```properties
-POSTGRES_DB=classpath
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=senha_super_segura
-SHOW_SQL=false
-CORS_ALLOWED_ORIGINS=http://localhost:3000
-```
+Preencha o `.env` a partir de `.env.example` e siga o [guia de segurança](../docs/seguranca.md) para gerar os segredos. Neste diretório, execute `docker compose up -d --build`. O PostgreSQL é acessível pela rede do Compose, e a API escuta em `127.0.0.1:8080` por padrão.
 
-### 2. Subir a Infraestrutura
+As leituras em `http://localhost:8080/api` são públicas. Para operações de escrita ou acesso a `/v3/api-docs` e ao Swagger, use uma ferramenta HTTP com `Authorization: Bearer …` e o token de serviço. O Flask aplica esse cabeçalho às escritas no servidor.
 
-Execute o comando abaixo para compilar a aplicação e subir os contêineres:
-
-```bash
-docker compose up -d --build
-```
-*O banco de dados é acessado internamente pela rede do Docker, garantindo maior segurança ao não expor a porta 5432 externamente.*
-
-### 3. Acessar a Aplicação e Documentação
-- **API Base:** `http://localhost:8080/api`
-- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
-
-*(Caso prefira rodar localmente sem o contêiner do Spring Boot, você pode iniciar apenas o PostgreSQL via Docker e rodar a aplicação usando `mvn spring-boot:run`)*.
+Para rodar com `mvn spring-boot:run`, exporte as variáveis de ambiente no shell antes de iniciar o Java e aponte para um PostgreSQL acessível a partir do host. O Spring não carrega `.env` diretamente. Use o perfil `dev` somente para o banco de desenvolvimento.
 
 ## Resumo dos Endpoints
 

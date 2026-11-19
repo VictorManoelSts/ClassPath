@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Painel para cadastrar disciplinas, horários e avisos do ClassPath">
     <meta name="color-scheme" content="light dark">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#fbfbfa">
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <title>ClassPath | Painel administrativo</title>
@@ -24,6 +25,10 @@
     </div>
 
     <div class="acoes-cabecalho">
+        <form method="post" action="{{ url_for('logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="botao secundario">Sair</button>
+        </form>
         <div id="status-rede" class="aviso-offline oculto" role="status">Sem conexão</div>
 
         <div id="status-api" class="status status-desconectado" role="status" aria-live="polite">

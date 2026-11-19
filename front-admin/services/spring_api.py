@@ -1,75 +1,69 @@
-﻿import requests
-from config import Config
+import requests
+from flask import current_app
+
+TIMEOUT = (3, 10)
 
 def _get_url(endpoint):
-    """Função utilitária para montar a URL base do Spring Boot"""
-    return f"{Config.URL_SPRING_BOOT}{endpoint}"
+    return current_app.config["URL_SPRING_BOOT"].rstrip("/") + endpoint
 
 # --- DISCIPLINAS ---
+def _write(method, endpoint, **kwargs):
+    token = current_app.config["ACADEMIC_ADMIN_TOKEN"]
+    response = requests.request(method, _get_url(endpoint), **kwargs,
+                                headers={"Authorization": f"Bearer {token}"},
+                                timeout=TIMEOUT, allow_redirects=False)
+    response.raise_for_status()
+    if response.is_redirect:
+        raise requests.HTTPError("Redirecionamento inesperado", response=response)
+    return response.json() if response.content else {}
+
+
 def listar_disciplinas():
-    response = requests.get(_get_url('/disciplinas'))
-    response.raise_for_status() # Lança exceção se o Spring retornar erro 4xx ou 5xx
+    response = requests.get(_get_url('/disciplinas'), timeout=TIMEOUT, allow_redirects=False)
+    response.raise_for_status()
     return response.json()
 
 def criar_disciplina(payload):
     # payload esperado: { "nome": "String", "professor": "String" }
-    response = requests.post(_get_url('/disciplinas'), json=payload)
-    response.raise_for_status()
-    return response.json()
+    return _write("POST", '/disciplinas', json=payload)
 
 # --- HORÁRIOS ---
 def listar_horarios():
-    response = requests.get(_get_url('/horarios'))
+    response = requests.get(_get_url('/horarios'), timeout=TIMEOUT, allow_redirects=False)
     response.raise_for_status()
     return response.json()
 
 def criar_horario(payload):
     # payload esperado: { "disciplinaId": Long, "diaSemana": "String", ... }
-    response = requests.post(_get_url('/horarios'), json=payload)
-    response.raise_for_status()
-    return response.json()
+    return _write("POST", '/horarios', json=payload)
 
 # --- AVISOS ---
 def listar_avisos():
-    response = requests.get(_get_url('/avisos'))
+    response = requests.get(_get_url('/avisos'), timeout=TIMEOUT, allow_redirects=False)
     response.raise_for_status()
     return response.json()
 
 def criar_aviso(payload):
     # payload esperado: { "titulo": "String", "descricao": "String", "disciplinaId": Long, "dataPublicacao": "String" }
-    response = requests.post(_get_url('/avisos'), json=payload)
-    response.raise_for_status()
-    return response.json()
+    return _write("POST", '/avisos', json=payload)
 
 # Atualizar e Deletar Disciplinas
 def atualizar_disciplina(id, payload):
-    response = requests.put(_get_url(f'/disciplinas/{id}'), json=payload)
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("PUT", f'/disciplinas/{id}', json=payload)
 
 def deletar_disciplina(id):
-    response = requests.delete(_get_url(f'/disciplinas/{id}'))
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("DELETE", f'/disciplinas/{id}')
 
 # Atualizar e Deletar Horários
 def atualizar_horario(id, payload):
-    response = requests.put(_get_url(f'/horarios/{id}'), json=payload)
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("PUT", f'/horarios/{id}', json=payload)
 
 def deletar_horario(id):
-    response = requests.delete(_get_url(f'/horarios/{id}'))
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("DELETE", f'/horarios/{id}')
 
 # Atualizar e Deletar Avisos
 def atualizar_aviso(id, payload):
-    response = requests.put(_get_url(f'/avisos/{id}'), json=payload)
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("PUT", f'/avisos/{id}', json=payload)
 
 def deletar_aviso(id):
-    response = requests.delete(_get_url(f'/avisos/{id}'))
-    response.raise_for_status()
-    return response.json() if response.text else {}
+    return _write("DELETE", f'/avisos/{id}')

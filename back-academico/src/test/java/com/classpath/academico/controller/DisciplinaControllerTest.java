@@ -1,5 +1,6 @@
 package com.classpath.academico.controller;
 
+import com.classpath.academico.AcademicSecurityFixture;
 import com.classpath.academico.model.Aviso;
 import com.classpath.academico.model.Disciplina;
 import com.classpath.academico.model.Horario;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class DisciplinaControllerTest {
+class DisciplinaControllerTest extends AcademicSecurityFixture {
 
     private static final String URL = "/api/disciplinas";
 
@@ -51,7 +52,7 @@ class DisciplinaControllerTest {
 
     @Test
     void cadastraDisciplinaComJsonCompativel() throws Exception {
-        MvcResult resultado = mvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON)
+        MvcResult resultado = mvc.perform(post(URL).header("Authorization", AUTHORIZATION).contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"nome":" Matemática ","professor":" Maria "}
                                 """))
@@ -81,10 +82,10 @@ class DisciplinaControllerTest {
                 """.formatted(nomeJson, professorJson);
         Disciplina existente = disciplinaRepository.save(new Disciplina("História", "Ana"));
 
-        mvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON).content(corpo))
+        mvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON).content(corpo).header("Authorization", AUTHORIZATION))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.campos." + campo).isString());
-        mvc.perform(put(URL + "/{id}", existente.getId()).contentType(MediaType.APPLICATION_JSON).content(corpo))
+        mvc.perform(put(URL + "/{id}", existente.getId()).contentType(MediaType.APPLICATION_JSON).content(corpo).header("Authorization", AUTHORIZATION))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.campos." + campo).isString());
     }
@@ -93,7 +94,7 @@ class DisciplinaControllerTest {
     void atualizaDisciplinaPeloIdDaUrl() throws Exception {
         Disciplina existente = disciplinaRepository.save(new Disciplina("História", "Ana"));
 
-        mvc.perform(put(URL + "/{id}", existente.getId()).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put(URL + "/{id}", existente.getId()).header("Authorization", AUTHORIZATION).contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"id":-1,"nome":" Geografia ","professor":" José "}
                                 """))
@@ -129,7 +130,7 @@ class DisciplinaControllerTest {
     void excluiDisciplinaSemRelacionamentos() throws Exception {
         Disciplina disciplina = disciplinaRepository.save(new Disciplina("História", "Ana"));
 
-        mvc.perform(delete(URL + "/{id}", disciplina.getId()))
+        mvc.perform(delete(URL + "/{id}", disciplina.getId()).header("Authorization", AUTHORIZATION))
                 .andExpect(status().isNoContent());
 
         assertThat(disciplinaRepository.existsById(disciplina.getId())).isFalse();
@@ -152,7 +153,7 @@ class DisciplinaControllerTest {
     }
 
     private void verificarExclusaoBloqueada(Long id) throws Exception {
-        mvc.perform(delete(URL + "/{id}", id))
+        mvc.perform(delete(URL + "/{id}", id).header("Authorization", AUTHORIZATION))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.erro").value(
                         "A disciplina não pode ser excluída porque possui horários ou avisos associados"));

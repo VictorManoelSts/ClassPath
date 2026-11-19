@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # O comando que mantém o BFF rodando, escutando conexões externas (0.0.0.0)
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["python", "-c", "from app import create_app; from waitress import serve; app = create_app(); serve(app, listen='0.0.0.0:5000', max_request_body_size=max(app.config['MAX_CONTENT_LENGTH'], app.config['MATERIALS_MAX_UPLOAD_BYTES'] + 65536))"]

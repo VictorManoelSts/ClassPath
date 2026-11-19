@@ -5,6 +5,6 @@ services:
     build: .
     container_name: bff-painel
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     env_file:
       - .env

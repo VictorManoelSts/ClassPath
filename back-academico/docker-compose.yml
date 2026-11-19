@@ -5,12 +5,11 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    # O mapeamento "ports: - 5432:5432" foi removido para isolar o IP localmente.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD no .env}
     volumes:
       - classpath_postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", 'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -25,10 +24,11 @@ services:
       DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       DATABASE_USERNAME: ${POSTGRES_USER}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
-      SHOW_SQL: ${SHOW_SQL:-false}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      ACADEMIC_ADMIN_TOKEN_HASH: ${ACADEMIC_ADMIN_TOKEN_HASH:?Configure ACADEMIC_ADMIN_TOKEN_HASH no .env}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
     ports:
-      - "8080:8080"
+      - "${ACADEMIC_BIND_IP:-127.0.0.1}:8080:8080"
 
 volumes:
   classpath_postgres:

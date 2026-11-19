@@ -90,9 +90,8 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         LOGGER.error(
-                "Erro inesperado ao processar {}",
-                request.getRequestURI(),
-                erro
+                "Erro inesperado no processamento da API ({})",
+                erro.getClass().getSimpleName()
         );
 
         return criarResposta(
