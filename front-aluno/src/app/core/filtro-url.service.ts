@@ -1,48 +1,39 @@
-import { DestroyRef, Injectable, inject, signal } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter, map } from "rxjs";
 
-/**
- * Mantém um valor sincronizado com a query string.
- *
- * Usa `pushState`, e não `replaceState`, para que o botão voltar do
- * navegador desfaça o filtro — comportamento que o usuário espera.
- * O listener de `popstate` fecha o ciclo.
- */
 @Injectable({ providedIn: "root" })
 export class FiltroUrlService {
-  private readonly parametro = "disciplina";
-  private readonly valor = signal(this.lerDaUrl());
+  private readonly router = inject(Router);
 
-  /** Valor atual do filtro. Vazio significa "todas as disciplinas". */
-  readonly disciplina = this.valor.asReadonly();
+  /** Cada entrada do histórico guarda o filtro da sua própria página. */
+  readonly disciplina = toSignal(
+    this.router.events.pipe(
+      filter((evento) => evento instanceof NavigationEnd),
+      map((evento) => this.ler(evento.urlAfterRedirects)),
+    ),
+    { initialValue: this.ler(this.router.url) },
+  );
 
-  constructor() {
-    const aoNavegar = () => this.valor.set(this.lerDaUrl());
-    window.addEventListener("popstate", aoNavegar);
-    inject(DestroyRef).onDestroy(() => window.removeEventListener("popstate", aoNavegar));
+  alterar(disciplina: string): void {
+    this.navegar(disciplina, false);
   }
 
-  /** Troca o filtro e empilha no histórico (o botão voltar desfaz). */
-  alterar(novoValor: string): void {
-    this.valor.set(novoValor);
-    window.history.pushState({}, "", this.montarUrl(novoValor));
+  substituir(disciplina: string): void {
+    this.navegar(disciplina, true);
   }
 
-  /** Usado quando o valor da URL aponta para algo que não existe mais. */
-  substituir(novoValor: string): void {
-    this.valor.set(novoValor);
-    window.history.replaceState({}, "", this.montarUrl(novoValor));
+  private ler(url: string): string {
+    return this.router.parseUrl(url).queryParamMap.get("disciplina") ?? "";
   }
 
-  private lerDaUrl(): string {
-    return new URLSearchParams(window.location.search).get(this.parametro) || "";
-  }
-
-  private montarUrl(novoValor: string): URL {
-    const url = new URL(window.location.href);
-
-    if (novoValor) url.searchParams.set(this.parametro, novoValor);
-    else url.searchParams.delete(this.parametro);
-
-    return url;
+  private navegar(disciplina: string, replaceUrl: boolean): void {
+    void this.router.navigate([], {
+      queryParams: { disciplina: disciplina || null },
+      queryParamsHandling: "merge",
+      preserveFragment: true,
+      replaceUrl,
+    });
   }
 }

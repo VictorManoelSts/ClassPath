@@ -1,0 +1,26 @@
+<div class="welcome-row">
+  <div>
+    <span class="welcome-date">{{ hoje }}</span>
+    <h1>{{ titulo() }}</h1>
+    @if (descricao()) {
+      <p>{{ descricao() }}</p>
+    }
+  </div>
+  <div class="academic-period">
+    <span>Período</span>
+    <strong>{{ periodo }}</strong>
+  </div>
+</div>
+
+<app-filter-bar
+  [disciplinas]="disciplinas.itens()"
+  [disciplinaId]="filtro.disciplina()"
+  [desabilitado]="disciplinas.carregando() && !disciplinas.itens().length"
+  (alterar)="filtro.alterar($event)"
+/>
+
+@if (disciplinas.erro()) {
+  <app-error-state [mensagem]="disciplinas.erro()" (tentarNovamente)="disciplinas.recarregar()" />
+}
+
+<ng-content />

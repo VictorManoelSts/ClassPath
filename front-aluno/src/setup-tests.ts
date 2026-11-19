@@ -4,6 +4,14 @@
  */
 import { afterEach, vi } from "vitest";
 
+// No Node 26, o global nativo pode ocultar o armazenamento do jsdom.
+if (!window.localStorage) {
+  Object.defineProperty(window, "localStorage", {
+    configurable: true,
+    value: jsdom.window.localStorage,
+  });
+}
+
 // jsdom não implementa matchMedia, e o serviço de tema depende dele.
 if (!window.matchMedia) {
   window.matchMedia = (consulta: string) =>

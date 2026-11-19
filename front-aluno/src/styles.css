@@ -195,6 +195,12 @@ button {
   background: var(--surface-2);
 }
 
+.main-nav a.active {
+  color: var(--text);
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
 .theme-toggle {
   display: grid;
   place-items: center;
@@ -388,49 +394,6 @@ button {
   background: var(--surface);
   font-size: 13.5px;
   font-weight: 500;
-}
-
-/* ---------- Resumo ---------- */
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  margin-top: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  background: var(--border);
-}
-
-.summary-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 20px;
-  background: var(--surface);
-}
-
-.summary-card svg {
-  flex: 0 0 auto;
-  color: var(--text-3);
-}
-.summary-card > div {
-  display: flex;
-  flex-direction: column;
-}
-
-.summary-card strong {
-  font-size: 24px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-}
-
-.summary-card div span {
-  color: var(--text-2);
-  font-size: 13px;
 }
 
 /* ---------- Seções ---------- */
@@ -1145,9 +1108,6 @@ footer p {
 /* ---------- Responsivo ---------- */
 
 @media (max-width: 940px) {
-  .summary-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .discipline-grid,
   .loading-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1167,11 +1127,16 @@ footer p {
 
 @media (max-width: 640px) {
   .topbar {
-    gap: 12px;
-    padding: 0 16px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 8px 16px;
   }
-  .brand small {
-    display: none;
+  .brand {
+    flex-basis: 100%;
+  }
+  .main-nav {
+    flex: 1;
+    margin-left: 0;
   }
   .main-nav a {
     padding: 7px 9px;
@@ -1209,9 +1174,6 @@ footer p {
   .error-state button {
     grid-column: 1 / -1;
     justify-content: center;
-  }
-  .summary-grid {
-    grid-template-columns: 1fr;
   }
   .content-section {
     padding-top: 44px;

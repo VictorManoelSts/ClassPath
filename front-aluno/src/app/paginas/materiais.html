@@ -1,0 +1,20 @@
+<app-pagina-academica titulo="Materiais" descricao="Consulte e baixe os PDFs das suas disciplinas.">
+  <section class="content-section" aria-labelledby="materiais-lista">
+    <div class="section-heading">
+      <h2 id="materiais-lista">Arquivos disponíveis</h2>
+      @if (!materiais.carregando() && !materiais.erro()) {
+        <span class="section-count">
+          {{ materiais.itens().length }}
+          {{ materiais.itens().length === 1 ? "arquivo" : "arquivos" }}
+        </span>
+      }
+    </div>
+    <app-material-list
+      [materiais]="materiais.itens()"
+      [disciplinas]="disciplinas()"
+      [carregando]="materiais.carregando()"
+      [erro]="materiais.erro()"
+      (tentarNovamente)="materiais.recarregar()"
+    />
+  </section>
+</app-pagina-academica>

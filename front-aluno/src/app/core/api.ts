@@ -150,6 +150,7 @@ export async function buscarLista<T>(
   }
 
   const dados = comoLista(await requisicao(caminho, signal, urlBase));
+  signal?.throwIfAborted();
   cache.set(chaveDoCache, { dados, em: agora });
   return dados as T[];
 }

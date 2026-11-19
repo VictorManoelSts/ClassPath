@@ -47,6 +47,28 @@ docker compose up -d --build --wait
 
 As portas são publicadas em `127.0.0.1`. Os contêineres se comunicam pelos nomes dos serviços do Compose. PostgreSQL e MongoDB usam volumes persistentes. Use `docker compose down` para parar a pilha preservando os dados.
 
+### Trabalhar em um serviço por vez
+
+Para iniciar serviços separadamente a partir de uma pilha parada, execute na raiz, na ordem abaixo. Cada comando espera o serviço iniciar e, quando há uma verificação de saúde, ficar pronto.
+
+```bash
+docker compose up -d --no-deps --wait postgres
+docker compose up -d --no-deps --wait mongo
+docker compose up -d --no-deps --wait back-academico
+docker compose up -d --no-deps --wait back-materiais
+docker compose up -d --no-deps --wait front-admin
+docker compose up -d --no-deps --wait front-aluno
+docker compose up -d --no-deps --wait landing-page
+```
+
+Com as dependências já rodando, reconstrua só o serviço alterado. Por exemplo, para o painel administrativo
+
+```bash
+docker compose up -d --build --no-deps --wait front-admin
+```
+
+Use o nome do serviço correspondente para atualizar o portal do aluno ou uma API. As alterações nos arquivos da landing page aparecem ao recarregar a página, pois o diretório é montado diretamente no contêiner.
+
 ### 2. Aplicativo Mobile (Android Studio)
 
 O app Android foi projetado para rodar facilmente, mesmo sem a infraestrutura backend online[cite: 5].

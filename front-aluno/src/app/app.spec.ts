@@ -1,6 +1,10 @@
+import { APP_BASE_HREF, BrowserPlatformLocation, PlatformLocation } from "@angular/common";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { NavigationEnd, Router, provideRouter } from "@angular/router";
+import { filter, firstValueFrom } from "rxjs";
 
 import { App } from "./app";
+import { routes } from "./app.routes";
 import { limparCache } from "./core/api";
 
 const DISCIPLINAS = [
@@ -65,8 +69,12 @@ function apiFake({ falhar = false, corpo }: { falhar?: boolean; corpo?: unknown 
           : url.includes("/disciplinas")
             ? DISCIPLINAS
             : url.includes("/horarios")
-              ? HORARIOS
-              : AVISOS;
+              ? HORARIOS.filter(
+                  (aula) => !url.includes("disciplinaId=2") || aula.disciplinaId === 2,
+                )
+              : AVISOS.filter(
+                  (aviso) => !url.includes("disciplinaId=2") || aviso.disciplinaId === 2,
+                );
 
     return { ok: true, status: 200, text: async () => JSON.stringify(dados) };
   });
@@ -80,12 +88,29 @@ async function assentar(fixture: ComponentFixture<App>) {
   }
 }
 
-async function montar() {
-  await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
+async function montar(url = "/") {
+  window.history.replaceState({}, "", url);
+  await TestBed.configureTestingModule({
+    imports: [App],
+    providers: [
+      provideRouter(routes),
+      { provide: APP_BASE_HREF, useValue: "/" },
+      { provide: PlatformLocation, useClass: BrowserPlatformLocation },
+    ],
+  }).compileComponents();
   const fixture = TestBed.createComponent(App);
   fixture.detectChanges();
+  TestBed.inject(Router).initialNavigation();
   await assentar(fixture);
   return fixture;
+}
+
+function navegar(fixture: ComponentFixture<App>, pagina: string): void {
+  const link = (fixture.nativeElement as HTMLElement).querySelector<HTMLAnchorElement>(
+    `.main-nav a[href="/${pagina}"]`,
+  );
+  if (!link) throw new Error(`Link de ${pagina} não encontrado`);
+  link.click();
 }
 
 function texto(fixture: ComponentFixture<App>): string {
@@ -105,24 +130,56 @@ beforeEach(() => {
 });
 
 describe("App", () => {
-  it("mostra disciplinas, aulas, materiais e avisos vindos das APIs", async () => {
-    vi.stubGlobal("fetch", apiFake());
+  it("abre Avisos e consulta apenas os dados das páginas visitadas", async () => {
+    const espiao = apiFake();
+    vi.stubGlobal("fetch", espiao);
     const fixture = await montar();
+    const host = fixture.nativeElement as HTMLElement;
+    const topo = host.querySelector("header");
 
-    const titulos = [
-      ...(fixture.nativeElement as HTMLElement).querySelectorAll(".discipline-card h3"),
-    ].map((elemento) => elemento.textContent?.trim());
+    expect(TestBed.inject(Router).url).toBe("/avisos");
+    expect(texto(fixture)).toContain("Prova na sexta");
+    expect(espiao.mock.calls.map(([url]) => url)).toEqual([
+      "http://localhost:8080/api/disciplinas",
+      "http://localhost:8080/api/avisos",
+    ]);
+
+    navegar(fixture, "horarios");
+    await assentar(fixture);
+    expect(texto(fixture)).toContain("Disciplinas do semestre");
+    expect(texto(fixture)).toContain("Ana Ribeiro");
+    expect(texto(fixture)).toContain("Sala 12");
+    expect(host.querySelector('[aria-current="page"]')?.getAttribute("href")).toBe("/horarios");
+
+    const titulos = [...host.querySelectorAll(".discipline-card h3")].map((elemento) =>
+      elemento.textContent?.trim(),
+    );
 
     expect(titulos).toContain("Cálculo I");
     expect(titulos).toContain("Banco de Dados");
+    navegar(fixture, "materiais");
+    await assentar(fixture);
     expect(texto(fixture)).toContain("Aula 01 - Introdução.pdf");
+    expect(texto(fixture)).not.toContain("Sala 12");
+    expect(host.querySelector("header")).toBe(topo);
+
+    navegar(fixture, "avisos");
+    await assentar(fixture);
+    expect(texto(fixture)).toContain("Prova na sexta");
+    expect(espiao).toHaveBeenCalledTimes(4);
+  });
+
+  it("redireciona URLs desconhecidas para Avisos", async () => {
+    vi.stubGlobal("fetch", apiFake());
+    const fixture = await montar("/desconhecida");
+    expect(TestBed.inject(Router).url).toBe("/avisos");
     expect(texto(fixture)).toContain("Prova na sexta");
   });
 
   it("consulta e baixa materiais pelo Back Materiais", async () => {
     const espiao = apiFake();
     vi.stubGlobal("fetch", espiao);
-    const fixture = await montar();
+    const fixture = await montar("/materiais");
 
     expect(espiao.mock.calls.some(([url]) => url === "http://localhost:8000/api/materiais")).toBe(
       true,
@@ -142,7 +199,7 @@ describe("App", () => {
   it("filtra materiais com o mesmo ID de disciplina selecionado", async () => {
     const espiao = apiFake();
     vi.stubGlobal("fetch", espiao);
-    const fixture = await montar();
+    const fixture = await montar("/materiais");
 
     const seletor = (fixture.nativeElement as HTMLElement).querySelector(
       "#disciplina",
@@ -154,6 +211,47 @@ describe("App", () => {
     expect(
       espiao.mock.calls.some(([url]) => url === "http://localhost:8000/api/materiais?disciplina=1"),
     ).toBe(true);
+  });
+
+  it("mantém a consulta de materiais pendente ao sair e voltar à página", async () => {
+    const api = apiFake();
+    const urlMateriais = "http://localhost:8000/api/materiais";
+    let liberar!: () => void;
+    const pendente = new Promise<void>((resolve) => {
+      liberar = resolve;
+    });
+    const espiao = vi.fn(async (url: string) => {
+      if (url === urlMateriais) await pendente;
+      return api(url);
+    });
+    vi.stubGlobal("fetch", espiao);
+    const fixture = await montar("/materiais");
+    const host = fixture.nativeElement as HTMLElement;
+
+    expect(host.querySelector('app-material-list [aria-busy="true"]')).toBeTruthy();
+    navegar(fixture, "avisos");
+    await assentar(fixture);
+    expect(texto(fixture)).toContain("Prova na sexta");
+    navegar(fixture, "materiais");
+    await assentar(fixture);
+
+    expect(espiao.mock.calls.filter(([url]) => url === urlMateriais)).toHaveLength(1);
+    liberar();
+    await assentar(fixture);
+    expect(texto(fixture)).toContain("Aula 01 - Introdução.pdf");
+  });
+
+  it("permite repetir uma consulta de materiais que falhou", async () => {
+    const api = apiFake();
+    const espiao = vi.fn(api);
+    espiao.mockImplementationOnce(api).mockRejectedValueOnce(new TypeError("Failed to fetch"));
+    vi.stubGlobal("fetch", espiao);
+    const fixture = await montar("/materiais");
+
+    expect(texto(fixture)).toMatch(/servidor/i);
+    botaoPorTexto(fixture, "Tentar de novo").click();
+    await assentar(fixture);
+    expect(texto(fixture)).toContain("Aula 01 - Introdução.pdf");
   });
 
   it("escreve o filtro na URL ao escolher uma disciplina", async () => {
@@ -187,15 +285,22 @@ describe("App", () => {
   // Regressão do porte: com [value] no <select> a opção vinda da URL não
   // era marcada, porque as opções só chegam depois da primeira pintura.
   it("marca no seletor a disciplina que veio na URL", async () => {
-    window.history.replaceState({}, "", "/?disciplina=2");
     vi.stubGlobal("fetch", apiFake());
-    const fixture = await montar();
+    const fixture = await montar("/avisos?disciplina=2");
 
     const seletor = (fixture.nativeElement as HTMLElement).querySelector(
       "#disciplina",
     ) as HTMLSelectElement;
 
     expect(seletor.value).toBe("2");
+    expect(texto(fixture)).toContain("Nenhum aviso por enquanto");
+    navegar(fixture, "horarios");
+    await assentar(fixture);
+    const novoSeletor = (fixture.nativeElement as HTMLElement).querySelector<HTMLSelectElement>(
+      "#disciplina",
+    );
+    expect(novoSeletor?.value).toBe("");
+    expect(texto(fixture)).toContain("Sala 12");
   });
 
   it("mostra o estado de erro quando a API está fora do ar", async () => {
@@ -209,14 +314,14 @@ describe("App", () => {
 
   it("não quebra quando a API responde algo que não é lista", async () => {
     vi.stubGlobal("fetch", apiFake({ corpo: { erro: "formato inesperado" } }));
-    const fixture = await montar();
+    const fixture = await montar("/horarios");
 
     expect(texto(fixture)).toContain("Nenhuma disciplina cadastrada");
   });
 
   it("alterna entre a grade da semana e a lista", async () => {
     vi.stubGlobal("fetch", apiFake());
-    const fixture = await montar();
+    const fixture = await montar("/horarios");
 
     const botaoLista = botaoPorTexto(fixture, "Lista");
     botaoLista.click();
@@ -228,7 +333,7 @@ describe("App", () => {
 
   it("desenha a grade da semana com uma coluna por dia", async () => {
     vi.stubGlobal("fetch", apiFake());
-    const fixture = await montar();
+    const fixture = await montar("/horarios");
 
     const grade = (fixture.nativeElement as HTMLElement).querySelector(
       ".week-grid-inner",
@@ -261,9 +366,8 @@ describe("App", () => {
   });
 
   it("limpa o filtro pelo botão e tira o parâmetro da URL", async () => {
-    window.history.replaceState({}, "", "/?disciplina=1");
     vi.stubGlobal("fetch", apiFake());
-    const fixture = await montar();
+    const fixture = await montar("/?disciplina=1");
 
     botaoPorTexto(fixture, "Limpar").click();
     await assentar(fixture);
@@ -274,24 +378,28 @@ describe("App", () => {
 
   it("desfaz o filtro quando o usuário aperta voltar no navegador", async () => {
     vi.stubGlobal("fetch", apiFake());
-    const fixture = await montar();
+    const fixture = await montar("/horarios");
 
     const seletor = (fixture.nativeElement as HTMLElement).querySelector(
       "#disciplina",
     ) as HTMLSelectElement;
-    seletor.value = "1";
+    seletor.value = "2";
     seletor.dispatchEvent(new Event("change"));
     await assentar(fixture);
 
-    // O jsdom percorre o histórico de forma assíncrona e dispara o
-    // popstate por conta própria; por isso o respiro antes de assentar.
+    expect(texto(fixture)).toContain("Nenhuma aula nesta seleção");
+
+    const voltou = firstValueFrom(
+      TestBed.inject(Router).events.pipe(filter((evento) => evento instanceof NavigationEnd)),
+    );
     window.history.back();
-    await new Promise((resolva) => setTimeout(resolva, 20));
+    await voltou;
     await assentar(fixture);
 
     expect(
       (fixture.nativeElement as HTMLElement).querySelectorAll(".discipline-card"),
     ).toHaveLength(2);
+    expect(texto(fixture)).toContain("Sala 12");
   });
 
   it("alterna o tema e guarda a escolha", async () => {
@@ -309,6 +417,11 @@ describe("App", () => {
     expect(document.documentElement.dataset["theme"]).not.toBe(antes);
     expect(window.localStorage.getItem("classpath-tema")).toBe(
       document.documentElement.dataset["theme"],
+    );
+    navegar(fixture, "materiais");
+    await assentar(fixture);
+    expect(document.documentElement.dataset["theme"]).toBe(
+      window.localStorage.getItem("classpath-tema"),
     );
   });
 

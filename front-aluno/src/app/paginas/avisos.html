@@ -1,0 +1,22 @@
+<app-pagina-academica titulo="Avisos" descricao="Acompanhe os comunicados das suas disciplinas.">
+  <section class="content-section" aria-labelledby="avisos-lista">
+    <div class="section-heading">
+      <h2 id="avisos-lista">Avisos publicados</h2>
+      @if (!avisos.carregando() && !avisos.erro()) {
+        <span class="section-count">
+          {{ avisos.itens().length }} {{ avisos.itens().length === 1 ? "aviso" : "avisos" }}
+        </span>
+      }
+    </div>
+    @if (avisos.erro()) {
+      <app-error-state [mensagem]="avisos.erro()" (tentarNovamente)="avisos.recarregar()" />
+    } @else {
+      <div [class.is-revalidating]="avisos.carregando() && avisos.itens().length">
+        <app-notice-list
+          [avisos]="avisos.itens()"
+          [carregando]="avisos.carregando() && !avisos.itens().length"
+        />
+      </div>
+    }
+  </section>
+</app-pagina-academica>

@@ -1,14 +1,13 @@
 <header class="topbar">
-  <a class="brand" href="#inicio">
+  <a class="brand" routerLink="/avisos">
     <span class="brand-mark" aria-hidden="true">CP</span>
     <strong>ClassPath</strong>
   </a>
 
   <nav class="main-nav" aria-label="Navegação principal">
-    <a href="#disciplinas">Disciplinas</a>
-    <a href="#horarios">Grade</a>
-    <a href="#materiais">Materiais</a>
-    <a href="#avisos">Avisos</a>
+    <a routerLink="/avisos" routerLinkActive="active" ariaCurrentWhenActive="page">Avisos</a>
+    <a routerLink="/horarios" routerLinkActive="active" ariaCurrentWhenActive="page">Horários</a>
+    <a routerLink="/materiais" routerLinkActive="active" ariaCurrentWhenActive="page">Materiais</a>
   </nav>
 
   <app-theme-toggle />

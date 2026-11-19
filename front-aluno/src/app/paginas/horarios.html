@@ -1,0 +1,39 @@
+<app-pagina-academica titulo="Horários">
+  <section class="content-section" aria-labelledby="horarios-lista">
+    <div class="section-heading">
+      <h2 id="horarios-lista">Grade semanal</h2>
+      @if (!horarios.carregando() && !horarios.erro()) {
+        <span class="section-count">
+          {{ horarios.itens().length }} {{ horarios.itens().length === 1 ? "aula" : "aulas" }}
+        </span>
+      }
+    </div>
+    @if (horarios.erro()) {
+      <app-error-state [mensagem]="horarios.erro()" (tentarNovamente)="horarios.recarregar()" />
+    } @else {
+      <div [class.is-revalidating]="horarios.carregando() && horarios.itens().length">
+        <app-schedule-view
+          [horarios]="horarios.itens()"
+          [carregando]="horarios.carregando() && !horarios.itens().length"
+        />
+      </div>
+    }
+  </section>
+
+  <section class="content-section" aria-labelledby="disciplinas-semestre">
+    <div class="section-heading">
+      <h2 id="disciplinas-semestre">Disciplinas do semestre</h2>
+      @if (dados.disciplinaSelecionada()) {
+        <span class="active-filter">Filtro ativo</span>
+      }
+    </div>
+    @if (!dados.disciplinas.erro()) {
+      <app-discipline-list
+        [disciplinas]="disciplinasVisiveis()"
+        [carregando]="dados.disciplinas.carregando()"
+        [temFiltro]="!!dados.disciplinaSelecionada()"
+        (selecionar)="filtro.alterar($event)"
+      />
+    }
+  </section>
+</app-pagina-academica>
