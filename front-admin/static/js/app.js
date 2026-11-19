@@ -62,8 +62,6 @@ function formatarData(valor) {
    ------------------------------------------------------------ */
 
 const statusApi = porId("status-api");
-const respostaApi = porId("resposta-api");
-const resumoRequisicao = porId("resumo-requisicao");
 
 function urlDaApi(caminho) {
     // Agora o JS chama as rotas do Flask (BFF) em vez do Spring Boot diretamente
@@ -77,14 +75,7 @@ function definirStatus(conectado) {
     statusApi.title = rotulo.textContent;
 }
 
-function mostrarResposta(metodo, caminho, status, dados) {
-    resumoRequisicao.textContent = `${metodo} ${caminho} — HTTP ${status}`;
-    respostaApi.textContent =
-        dados === null || dados === undefined ? "Resposta sem conteúdo." : JSON.stringify(dados, null, 2);
-}
-
-async function requisicao(caminho, opcoes = {}) {
-    const { registrarResposta = true, ...opcoesFetch } = opcoes;
+async function requisicao(caminho, opcoesFetch = {}) {
     const metodo = opcoesFetch.method || "GET";
 
     const cabecalhos = { ...opcoesFetch.headers };
@@ -117,12 +108,9 @@ async function requisicao(caminho, opcoes = {}) {
             }
         }
 
-        if (registrarResposta || !resposta.ok) {
-            mostrarResposta(metodo, caminho, resposta.status, dados);
-        }
-
         if (!resposta.ok) {
             const detalhe = dados?.erro || dados?.message || `O BFF respondeu com HTTP ${resposta.status}`;
+            console.error(`${metodo} ${urlDaApi(caminho)} — HTTP ${resposta.status}:`, detalhe);
             const erro = new Error(detalhe);
             erro.status = resposta.status;
             throw erro;
@@ -133,17 +121,13 @@ async function requisicao(caminho, opcoes = {}) {
     } catch (erro) {
         if (erro.name === "AbortError") {
             definirStatus(false);
-            mostrarResposta(metodo, caminho, "tempo esgotado", {
-                erro: `O BFF não respondeu em ${TEMPO_LIMITE / 1000}s.`,
-            });
+            console.error(`${metodo} ${urlDaApi(caminho)} — tempo esgotado:`, erro);
             throw new Error(`O BFF não respondeu em ${TEMPO_LIMITE / 1000}s.`);
         }
 
         if (erro instanceof TypeError) {
             definirStatus(false);
-            mostrarResposta(metodo, caminho, "sem resposta", {
-                erro: "Não foi possível acessar o back-end (Flask). Confira se ele está rodando.",
-            });
+            console.error(`${metodo} ${urlDaApi(caminho)} — falha de comunicação:`, erro);
             throw new Error("Não foi possível acessar o back-end (Flask). Confira se o servidor está no ar.");
         }
 
@@ -563,7 +547,7 @@ async function excluir(nome, item) {
 
         if (porId(config.idsDom.campoId).value === String(item.id)) limparFormulario(nome);
 
-        await carregar(nome, false);
+        await carregar(nome);
         if (nome === "disciplinas") atualizarSelectsDeDisciplina();
     } catch (erro) {
         mostrarMensagem(erro.message, "erro");
@@ -602,28 +586,28 @@ async function salvar(nome) {
     mostrarMensagem(id ? "Alterações salvas." : `${config.tituloNovo.replace("Cadastrar ", "")} cadastrado.`);
     limparFormulario(nome);
 
-    await carregar(nome, false);
+    await carregar(nome);
     if (nome === "disciplinas") atualizarSelectsDeDisciplina();
 
     for (const dependente of config.aposSalvar || []) {
-        await carregar(dependente, false);
+        await carregar(dependente);
     }
 }
 
-async function carregar(nome, registrarResposta = true) {
+async function carregar(nome) {
     const config = RECURSOS[nome];
     const filtro = config.idsDom.filtro ? porId(config.idsDom.filtro).value : "";
     const consulta = filtro ? `?disciplinaId=${encodeURIComponent(filtro)}` : "";
 
-    estado.dados[nome] = comoLista(await requisicao(`${config.rota}${consulta}`, { registrarResposta }));
+    estado.dados[nome] = comoLista(await requisicao(`${config.rota}${consulta}`));
     renderizar(nome);
 }
 
 async function carregarTudo() {
     try {
-        await carregar("disciplinas", false);
+        await carregar("disciplinas");
         atualizarSelectsDeDisciplina();
-        await carregar("horarios", false);
+        await carregar("horarios");
         await carregar("avisos");
         mostrarMensagem("Conectado. Dados atualizados.");
     } catch (erro) {
@@ -741,11 +725,6 @@ porId("recarregar-disciplinas").addEventListener("click", async () => {
     } catch (erro) {
         mostrarMensagem(erro.message, "erro");
     }
-});
-
-porId("limpar-resposta").addEventListener("click", () => {
-    resumoRequisicao.textContent = "Nenhuma requisição realizada.";
-    respostaApi.textContent = "A resposta JSON aparecerá aqui.";
 });
 
 Object.keys(RECURSOS).forEach((nome) => limparFormulario(nome));

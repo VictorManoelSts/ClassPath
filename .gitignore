@@ -19,3 +19,4 @@ mobile/build/
 docs/latex/*.aux
 docs/latex/*.log
 docs/latex/*.pdf
+/.env

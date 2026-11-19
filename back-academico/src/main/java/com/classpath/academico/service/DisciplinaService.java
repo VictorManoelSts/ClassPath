@@ -1,5 +1,7 @@
 package com.classpath.academico.service;
 
+import com.classpath.academico.dto.DisciplinaRequestDTO;
+import com.classpath.academico.dto.DisciplinaResponseDTO;
 import com.classpath.academico.exception.ResourceConflictException;
 import com.classpath.academico.exception.ResourceNotFoundException;
 import com.classpath.academico.exception.BusinessRuleException;
@@ -29,8 +31,14 @@ public class DisciplinaService {
         this.avisoRepository = avisoRepository;
     }
 
-    public List<Disciplina> listar() {
-        return disciplinaRepository.findAll(Sort.by("nome"));
+    public List<DisciplinaResponseDTO> listar() {
+        return disciplinaRepository.findAll(Sort.by("nome")).stream()
+                .map(DisciplinaResponseDTO::new)
+                .toList();
+    }
+
+    public DisciplinaResponseDTO detalhar(Long id) {
+        return new DisciplinaResponseDTO(buscarPorId(id));
     }
 
     public Disciplina buscarPorId(Long id) {
@@ -38,21 +46,21 @@ public class DisciplinaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Disciplina não encontrada: " + id));
     }
 
-    public Disciplina criar(Disciplina dados) {
+    public DisciplinaResponseDTO criar(DisciplinaRequestDTO dados) {
         validarDados(dados);
 
         Disciplina disciplina = new Disciplina(dados.getNome().trim(), dados.getProfessor().trim());
-        return disciplinaRepository.save(disciplina);
+        return new DisciplinaResponseDTO(disciplinaRepository.save(disciplina));
     }
 
-    public Disciplina atualizar(Long id, Disciplina dados) {
+    public DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO dados) {
         Disciplina disciplina = buscarPorId(id);
         validarDados(dados);
 
         disciplina.setNome(dados.getNome().trim());
         disciplina.setProfessor(dados.getProfessor().trim());
 
-        return disciplinaRepository.save(disciplina);
+        return new DisciplinaResponseDTO(disciplinaRepository.save(disciplina));
     }
 
     public void excluir(Long id) {
@@ -67,7 +75,7 @@ public class DisciplinaService {
         disciplinaRepository.delete(disciplina);
     }
 
-    private void validarDados(Disciplina dados) {
+    private void validarDados(DisciplinaRequestDTO dados) {
         if (dados == null) {
             throw new BusinessRuleException(
                     "Os dados da disciplina são obrigatórios"

@@ -31,17 +31,21 @@ O ecossistema possui duas formas principais de execução: via Docker para os se
 
 ### 1. Serviços Web e APIs (Docker)
 
-Certifique-se de ter o Docker e o Docker Compose instalados.
-*   **Variáveis de Ambiente:** Crie os arquivos `.env` baseando-se nos `.env.example` de cada diretório.
-*   **Subindo os contêineres:** Navegue até o diretório do serviço desejado (ou utilize um compose na raiz) e execute:
-    ```bash
-    docker compose up -d --build
-    ```
-*   **Acessos Padrão:**
-    *   Front Aluno: `http://localhost:5173`
-    *   Front Admin (BFF): `http://localhost:5000`
-    *   API Acadêmico (Spring): `http://localhost:8080/api`
-    *   API Materiais (FastAPI): `http://localhost:8000`
+Com o Docker em execução, copie o `.env.example` da raiz para `.env` e ajuste as credenciais locais. Na raiz, execute
+
+```bash
+docker compose up -d --build --wait
+```
+
+| Serviço | Endereço padrão |
+| --- | --- |
+| Front Aluno | http://localhost:5173 |
+| Front Admin | http://localhost:5000 |
+| Landing page | http://localhost:8081 |
+| API Acadêmica (Swagger) | http://localhost:8080/swagger-ui/index.html |
+| API de Materiais (Swagger) | http://localhost:8000/docs |
+
+As portas são publicadas em `127.0.0.1`. Os contêineres se comunicam pelos nomes dos serviços do Compose. PostgreSQL e MongoDB usam volumes persistentes. Use `docker compose down` para parar a pilha preservando os dados.
 
 ### 2. Aplicativo Mobile (Android Studio)
 
@@ -50,7 +54,7 @@ O app Android foi projetado para rodar facilmente, mesmo sem a infraestrutura ba
 1. Copie o arquivo `local.properties.example` para `local.properties`[cite: 5].
 2. Ajuste as chaves de configuração, principalmente o caminho do SDK (`sdk.dir`) e as chaves de ambiente[cite: 5]:
     *   **`USE_MOCK=true`:** O app roda inteiro com dados fictícios (nenhum back-end precisa estar no ar)[cite: 5].
-    *   **`USE_MOCK=false`:** O app consome os back-ends reais[cite: 5]. Neste caso, ajuste `URL_ACADEMICO` e `URL_MATERIAIS` com o IP da sua máquina na rede local[cite: 5].
+    *   **`USE_MOCK=false`:** No emulador Android, use `URL_ACADEMICO="http://10.0.2.2:8080/"` e `URL_MATERIAIS="http://10.0.2.2:8000/"` para acessar as APIs do Compose. Em dispositivo físico pela rede local, configure o endereço da máquina e publique as portas nesse endereço em `BIND_IP`.
 3. Abra a pasta do projeto mobile no Android Studio e rode em um emulador ou dispositivo físico (minSdk 26)[cite: 5].
 
 ---

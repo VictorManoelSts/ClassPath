@@ -1,6 +1,7 @@
 package com.classpath.academico.controller;
 
-import com.classpath.academico.model.Disciplina;
+import com.classpath.academico.dto.DisciplinaRequestDTO;
+import com.classpath.academico.dto.DisciplinaResponseDTO;
 import com.classpath.academico.service.DisciplinaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,23 +21,23 @@ public class DisciplinaController {
     }
 
     @GetMapping
-    public List<Disciplina> listar() {
+    public List<DisciplinaResponseDTO> listar() {
         return disciplinaService.listar();
     }
 
     @GetMapping("/{id}")
-    public Disciplina buscarPorId(@PathVariable Long id) {
-        return disciplinaService.buscarPorId(id);
+    public DisciplinaResponseDTO buscarPorId(@PathVariable Long id) {
+        return disciplinaService.detalhar(id);
     }
 
     @PostMapping
-    public ResponseEntity<Disciplina> criar(@Valid @RequestBody Disciplina dados) {
-        Disciplina salva = disciplinaService.criar(dados);
+    public ResponseEntity<DisciplinaResponseDTO> criar(@Valid @RequestBody DisciplinaRequestDTO dados) {
+        DisciplinaResponseDTO salva = disciplinaService.criar(dados);
         return ResponseEntity.status(HttpStatus.CREATED).body(salva);
     }
 
     @PutMapping("/{id}")
-    public Disciplina atualizar(@PathVariable Long id, @Valid @RequestBody Disciplina dados) {
+    public DisciplinaResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody DisciplinaRequestDTO dados) {
         return disciplinaService.atualizar(id, dados);
     }
 
