@@ -13,6 +13,6 @@ sealed class Screen(val route: String, val label: String, val icon: ImageVector)
     data object Materiais : Screen("materiais", "Materiais", Icons.Filled.FolderOpen)
 
     companion object {
-        val items = listOf(Horarios, Avisos, Materiais)
+        val items = listOf(Avisos, Horarios, Materiais)
     }
 }
